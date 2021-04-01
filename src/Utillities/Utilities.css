@@ -22,7 +22,7 @@
 
 /*  VEHICLEFORM STYLES  */
 .vehicle__input {
-  width: 6.5rem;
+  width: 6.75rem;
 }
 
 .vehicle__btn--submit {
@@ -39,7 +39,9 @@
   flex-direction: column;
   border-radius: 1rem;
   border-style: double;
+  display: flex;
   align-items: center;
+  justify-content: center;
   width: 21rem;
   background-color: khaki;
   position: relative;

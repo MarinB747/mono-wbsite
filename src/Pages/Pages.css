@@ -1,0 +1,35 @@
+.page {
+  margin-top: 85px;
+  align-items: center;
+}
+
+.page > p {
+  color: beige;
+  font-size: 1.5rem;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 50px;
+}
+/* HOME */
+.home__title {
+  font-size: 10rem;
+  margin-top: 40%;
+  color: khaki;
+  animation: fadein 3s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.about__title {
+  font-size: 3rem;
+  margin-top: 150px;
+  color: khaki;
+  animation: fadein 3s;
+  text-align: center;
+}
