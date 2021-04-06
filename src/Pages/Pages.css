@@ -9,6 +9,7 @@
   margin-left: 20%;
   margin-right: 20%;
   margin-top: 50px;
+  animation: fadein 3s;
 }
 /* HOME */
 .home__title {
@@ -26,6 +27,8 @@
     opacity: 1;
   }
 }
+
+/* ABOUT US */
 .about__title {
   font-size: 3rem;
   margin-top: 150px;

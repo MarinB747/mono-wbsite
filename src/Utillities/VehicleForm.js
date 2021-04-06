@@ -7,6 +7,7 @@ export default function VehicleForm() {
   const [vehicleBrand, setVehicleBrand] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
   const [vehicleYear, setVehicleYear] = useState("");
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   return (
     <form
@@ -30,6 +31,11 @@ export default function VehicleForm() {
             if (e.target.value.match("^[a-zA-Z ]*$") != null) {
               setVehicleBrand(e.target.value);
             }
+            if (vehicleBrand && vehicleModel && vehicleYear !== "") {
+              setSubmitDisabled(false);
+            } else {
+              setSubmitDisabled(true);
+            }
           }}
         />
         <input
@@ -39,6 +45,11 @@ export default function VehicleForm() {
           value={vehicleModel}
           onChange={(e) => {
             setVehicleModel(e.target.value);
+            if (vehicleBrand && vehicleModel && vehicleYear !== "") {
+              setSubmitDisabled(false);
+            } else {
+              setSubmitDisabled(true);
+            }
           }}
         />
         <input
@@ -50,10 +61,19 @@ export default function VehicleForm() {
             if (e.target.value.match("^[0-9]{1,4}$") != null) {
               setVehicleYear(e.target.value);
             }
+            if (vehicleBrand && vehicleModel && vehicleYear !== "") {
+              setSubmitDisabled(false);
+            } else {
+              setSubmitDisabled(true);
+            }
           }}
         />
       </div>
-      <button className="vehicle__btn--submit" type="submit">
+      <button
+        className="vehicle__btn--submit"
+        type="submit"
+        disabled={submitDisabled}
+      >
         Add Vehicle
       </button>
     </form>

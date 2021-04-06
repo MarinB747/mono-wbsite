@@ -5,8 +5,34 @@ import "./Utilities.css";
 
 export default function VehicleList() {
   const store = useContext(StoreContext);
+  const [sortedField, setSortedField] = useState(null);
   return useObserver(() => (
-    <ul className="vehicle__list">
+    <table className="vehicle__list">
+      {/* <ul>
+        <tr>
+          <th>
+            <button
+              type="button"
+              onClick={() => setSortedField("vehicleBrand")}
+            >
+              Brand
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              onClick={() => setSortedField("vehicleModel")}
+            >
+              Model
+            </button>
+          </th>
+          <th>
+            <button type="button" onClick={() => setSortedField("vehicleYear")}>
+              Year
+            </button>
+          </th>
+        </tr>
+     </ul>  */}
       <ul className="vehicle__list--wrapper">
         {store.vehicleBrand.map((vehicleBrand) => (
           <li className="vehicle__column" key={vehicleBrand}>
@@ -28,6 +54,6 @@ export default function VehicleList() {
           </li>
         ))}
       </ul>
-    </ul>
+    </table>
   ));
 }
