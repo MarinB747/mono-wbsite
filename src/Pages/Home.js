@@ -1,4 +1,3 @@
-import VehicleStore from "../Utillities/VehicleStore";
 import "./Pages.css";
 
 export default function Home() {

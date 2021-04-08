@@ -1,4 +1,4 @@
-import VehicleStore from "../Utillities/VehicleStore";
+import VehicleStore from "../Components/VehicleStore";
 import "./Pages.css";
 
 export default function Store() {
