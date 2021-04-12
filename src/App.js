@@ -1,5 +1,5 @@
 import Home from "./Pages/Home";
-import Store from "./Pages/Store";
+import VehicleListPage from "./Pages/VehicleListPage";
 import About from "./Pages/About";
 import "./App.css";
 import Navbar from "./Components/Navbar";
@@ -12,7 +12,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/store" exact component={Store} />
+          <Route path="/store" exact component={VehicleListPage} />
           <Route path="/about" exact component={About} />
         </Switch>
       </Router>

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { StoreContext } from "./VehicleStore";
-import "./Components.css";
+import { StoreContext } from "./VehicleListPage";
+import "./Pages.css";
 
 export default function VehicleForm() {
   const store = useContext(StoreContext);
@@ -8,16 +8,25 @@ export default function VehicleForm() {
   const [vehicleModel, setVehicleModel] = useState("");
   const [vehicleYear, setVehicleYear] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
-
+  const onDelete = () => {
+    const id = prompt("Delete by id", "");
+    store.vehicle.splice(id - 1, 1);
+  };
   return (
     <form
       onSubmit={(e) => {
-        store.addVehicleBrand(vehicleBrand);
-        store.addVehicleModel(vehicleModel);
-        store.addVehicleYear(vehicleYear);
-        setVehicleBrand("");
-        setVehicleModel("");
-        setVehicleYear("");
+        store.addVehicle({
+          brand: vehicleBrand,
+          brand_slug: vehicleBrand.toLowerCase(),
+          model: vehicleModel,
+          year: vehicleYear,
+          id:
+            Math.max.apply(
+              null,
+              store.vehicle.map((obj) => obj.id)
+            ) + 1,
+        });
+
         e.preventDefault();
       }}
     >
@@ -71,10 +80,20 @@ export default function VehicleForm() {
       </div>
       <button
         className="vehicle__btn--submit"
+        type="button"
+        disabled={submitDisabled}
+      >
+        Add Brand
+      </button>
+      <button
+        className="vehicle__btn--submit"
         type="submit"
         disabled={submitDisabled}
       >
         Add Vehicle
+      </button>
+      <button className="vehicle__btn--submit" type="button" onClick={onDelete}>
+        Delete Vehicle
       </button>
     </form>
   );
