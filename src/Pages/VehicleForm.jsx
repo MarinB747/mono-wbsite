@@ -12,6 +12,7 @@ export default function VehicleForm() {
     const id = prompt("Delete by id", "");
     store.vehicle.splice(id - 1, 1);
   };
+
   return (
     <form
       onSubmit={(e) => {
