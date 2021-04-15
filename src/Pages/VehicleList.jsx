@@ -5,26 +5,17 @@ import "./Pages.css";
 export default function VehicleList(props) {
   const store = useContext(StoreContext);
 
-  const onRename = (e) => {
-    store.vehicle.find((obj) => obj.id === 3);
-    const newBrand = prompt("Brand", store.vehicle.brand);
-    const newBrandSlug = newBrand.toLowerCase();
-    const newModel = prompt("Model", store.vehicle.model);
-    const newYear = prompt("Year", store.vehicle.year);
-    store.vehicle.prototype.defineProperties(store.vehicle, {
-      brand: { newBrand },
-      brand_slug: { newBrandSlug },
-      model: { newModel },
-      year: { newYear },
-    });
-  };
-  const filterBrand = () => {
-    const filterSlug = store.brand.slug;
-    store.vehicle.filter((obj) => obj.brand_slug === filterSlug);
-  };
-  function sortByYear() {
+  function filterBrand() {
+    store.vehicle.filter((obj) => obj.brand_slug === store.vehicle.brand_slug);
+  }
+
+  function sortById() {
+    store.vehicle.sort((b, a) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
+  }
+
+  function sortByBrand() {
     store.vehicle.sort((b, a) =>
-      a.year < b.year ? 1 : a.year > b.year ? -1 : 0
+      a.brand < b.brand ? 1 : a.brand > b.brand ? -1 : 0
     );
   }
   function sortByModel() {
@@ -32,18 +23,14 @@ export default function VehicleList(props) {
       a.model < b.model ? 1 : a.model > b.model ? -1 : 0
     );
   }
-  function sortByBrand() {
+  function sortByYear() {
     store.vehicle.sort((b, a) =>
-      a.brand < b.brand ? 1 : a.brand > b.brand ? -1 : 0
+      a.year < b.year ? 1 : a.year > b.year ? -1 : 0
     );
   }
-  function sortById() {
-    store.vehicle.sort((b, a) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
-  }
-
   return useObserver(() => (
     <div>
-      <select className="vehicle__dropdown">
+      <select className="vehicle__dropdown" onChange={() => filterBrand()}>
         {store.brand.map((brand) => (
           <option value={brand.slug}>{brand.name}</option>
         ))}

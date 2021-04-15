@@ -91,11 +91,9 @@
 }
 
 .vehicle__btn--submit {
-  margin-top: 1.2rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   text-align: center;
   position: relative;
-  left: 3%;
-  width: 30%;
+  width: 45%;
   margin-right: 5px;
 }

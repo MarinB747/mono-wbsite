@@ -8,9 +8,33 @@ export default function VehicleForm() {
   const [vehicleModel, setVehicleModel] = useState("");
   const [vehicleYear, setVehicleYear] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const onRename = () => {
+    const getId = prompt("Which vehicle to change, use id");
+    const byId = parseInt(getId);
+    const newBrand = prompt("Brand");
+    const newBrandSlug = newBrand.toLowerCase();
+    const newModel = prompt("Model");
+    const newYear = prompt("Year");
+    const objRename = store.vehicle.findIndex((obj) => obj.id === byId);
+    store.vehicle[objRename].brand = newBrand;
+    store.vehicle[objRename].brand_slug = newBrandSlug;
+    store.vehicle[objRename].model = newModel;
+    store.vehicle[objRename].year = newYear;
+  };
   const onDelete = () => {
     const id = prompt("Delete by id", "");
     store.vehicle.splice(id - 1, 1);
+  };
+  const pushBrand = () => {
+    store.addBrand({
+      name: vehicleBrand,
+      slug: vehicleBrand.toLowerCase(),
+      id:
+        Math.max.apply(
+          null,
+          store.vehicle.map((obj) => obj.id)
+        ) + 1,
+    });
   };
 
   return (
@@ -79,13 +103,7 @@ export default function VehicleForm() {
           }}
         />
       </div>
-      <button
-        className="vehicle__btn--submit"
-        type="button"
-        disabled={submitDisabled}
-      >
-        Add Brand
-      </button>
+
       <button
         className="vehicle__btn--submit"
         type="submit"
@@ -93,8 +111,19 @@ export default function VehicleForm() {
       >
         Add Vehicle
       </button>
+      <button
+        className="vehicle__btn--submit"
+        type="button"
+        onClick={pushBrand}
+        disabled={submitDisabled}
+      >
+        Add Brand
+      </button>
       <button className="vehicle__btn--submit" type="button" onClick={onDelete}>
         Delete Vehicle
+      </button>
+      <button className="vehicle__btn--submit" type="button" onClick={onRename}>
+        Rename Vehicle
       </button>
     </form>
   );
