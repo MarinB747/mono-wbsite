@@ -21,8 +21,9 @@ export default function VehicleForm() {
     store.vehicle[objRename].year = newYear;
   };
   const onDelete = () => {
-    const id = prompt("Delete by id", "");
-    store.vehicle.splice(id - 1, 1);
+    const determineId = prompt("Delete by id", "");
+    const id = store.vehicle.find((item) => item.id == determineId);
+    store.vehicle.remove(id);
   };
   const pushBrand = () => {
     store.addBrand({

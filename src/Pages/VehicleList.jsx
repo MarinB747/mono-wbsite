@@ -12,10 +12,6 @@ export default function VehicleList(props) {
   const endIndex = startIndex + rowsPerPage;
   const pageCount = [{ pages: 5 }, { pages: 10 }, { pages: 20 }];
 
-  /*  function filterBrand() {
-    store.vehicle.filter((obj) => obj.brand_slug === store.vehicle.brand_slug);
-  } */
-
   function sortById() {
     store.vehicle.sort((b, a) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
   }
