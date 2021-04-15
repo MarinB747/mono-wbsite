@@ -6,14 +6,15 @@ export default function VehicleList(props) {
   const store = useContext(StoreContext);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterBrand, setFilterBrand] = useState("");
   const [pages] = useState(Math.round(store.vehicle.length / rowsPerPage));
   const startIndex = currentPage * rowsPerPage - rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const pageCount = [{ pages: 5 }, { pages: 10 }, { pages: 20 }];
 
-  function filterBrand() {
+  /*  function filterBrand() {
     store.vehicle.filter((obj) => obj.brand_slug === store.vehicle.brand_slug);
-  }
+  } */
 
   function sortById() {
     store.vehicle.sort((b, a) => (a.id < b.id ? 1 : a.id > b.id ? -1 : 0));
@@ -43,10 +44,14 @@ export default function VehicleList(props) {
   const largerPage = (e) => {
     setRowsPerPage(e.target.value);
   };
+  const filterByBrand = (e) => {
+    setFilterBrand(e.target.value);
+  };
 
   return useObserver(() => (
     <div>
-      <select className="vehicle__dropdown" onChange={() => filterBrand()}>
+      <select className="vehicle__dropdown" onClick={filterByBrand}>
+        <option value={""}>All Brands</option>
         {store.brand.map((brand) => (
           <option value={brand.slug}>{brand.name}</option>
         ))}
@@ -83,22 +88,31 @@ export default function VehicleList(props) {
       </div>
       <table className="vehicle__list">
         <tb>
-          {store.vehicle.slice(startIndex, endIndex).map((vehicle) => (
-            <tr key={vehicle.id}>
-              <td className="vehicle__list--wrapper">
-                <li className="vehicle__column">{vehicle.id}</li>
-              </td>
-              <td className="vehicle__list--wrapper">
-                <li className="vehicle__column">{vehicle.brand}</li>
-              </td>
-              <td className="vehicle__list--wrapper">
-                <li className="vehicle__column">{vehicle.model}</li>
-              </td>
-              <td className="vehicle__list--wrapper">
-                <li className="vehicle__column">{vehicle.year}</li>
-              </td>
-            </tr>
-          ))}
+          {store.vehicle
+            .filter((item) => {
+              if (filterBrand !== "") {
+                return item.brand_slug === filterBrand;
+              } else {
+                return true;
+              }
+            })
+            .slice(startIndex, endIndex)
+            .map((vehicle) => (
+              <tr key={vehicle.id}>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.id}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.brand}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.model}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.year}</li>
+                </td>
+              </tr>
+            ))}
         </tb>
       </table>
       <div className="pagination__wrapper">

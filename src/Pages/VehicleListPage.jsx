@@ -89,6 +89,48 @@ const StoreProvider = ({ children }) => {
           model: "A6",
           year: "2011",
         },
+        {
+          id: 9,
+          brand: "Volkswagen",
+          brand_slug: "volkswagen",
+          model: "Golf 4",
+          year: "2001",
+        },
+        {
+          id: 10,
+          brand: "Volkswagen",
+          brand_slug: "volkswagen",
+          model: "Beetle",
+          year: "1997",
+        },
+        {
+          id: 11,
+          brand: "Volkswagen",
+          brand_slug: "volkswagen",
+          model: "Polo",
+          year: "1985",
+        },
+        {
+          id: 12,
+          brand: "Ford",
+          brand_slug: "ford",
+          model: "Focus",
+          year: "2006",
+        },
+        {
+          id: 13,
+          brand: "Ford",
+          brand_slug: "ford",
+          model: "Puma",
+          year: "2019",
+        },
+        {
+          id: 14,
+          brand: "Ford",
+          brand_slug: "ford",
+          model: "Kuga",
+          year: "2008",
+        },
       ],
       addBrand: (e) => {
         store.brand.push(e);
