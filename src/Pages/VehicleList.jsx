@@ -1,9 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useObserver } from "mobx-react";
 import { StoreContext } from "./VehicleListPage";
 import "./Pages.css";
 export default function VehicleList(props) {
   const store = useContext(StoreContext);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pages] = useState(Math.round(store.vehicle.length / rowsPerPage));
+  const startIndex = currentPage * rowsPerPage - rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const pageCount = [{ pages: 5 }, { pages: 10 }, { pages: 20 }];
 
   function filterBrand() {
     store.vehicle.filter((obj) => obj.brand_slug === store.vehicle.brand_slug);
@@ -28,6 +34,16 @@ export default function VehicleList(props) {
       a.year < b.year ? 1 : a.year > b.year ? -1 : 0
     );
   }
+  const NextPage = () => {
+    setCurrentPage((page) => page + 1);
+  };
+  const PreviousPage = () => {
+    setCurrentPage((page) => page - 1);
+  };
+  const largerPage = (e) => {
+    setRowsPerPage(e.target.value);
+  };
+
   return useObserver(() => (
     <div>
       <select className="vehicle__dropdown" onChange={() => filterBrand()}>
@@ -67,7 +83,7 @@ export default function VehicleList(props) {
       </div>
       <table className="vehicle__list">
         <tb>
-          {store.vehicle.map((vehicle) => (
+          {store.vehicle.slice(startIndex, endIndex).map((vehicle) => (
             <tr key={vehicle.id}>
               <td className="vehicle__list--wrapper">
                 <li className="vehicle__column">{vehicle.id}</li>
@@ -85,6 +101,25 @@ export default function VehicleList(props) {
           ))}
         </tb>
       </table>
+      <div className="pagination__wrapper">
+        <select onClick={largerPage}>
+          {pageCount.map((item) => (
+            <option value={item.pages}>{item.pages}</option>
+          ))}
+        </select>
+        <button
+          onClick={PreviousPage}
+          className={`prev ${currentPage === 1 ? "disabled" : ""}`}
+        >
+          ◀
+        </button>
+        <button
+          onClick={NextPage}
+          className={`next ${currentPage === pages ? "disabled" : ""}`}
+        >
+          ▶
+        </button>
+      </div>
     </div>
   ));
 }

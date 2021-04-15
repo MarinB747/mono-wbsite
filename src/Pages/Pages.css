@@ -97,3 +97,24 @@
   width: 45%;
   margin-right: 5px;
 }
+.pagination__wrapper {
+  position: relative;
+  left: 70%;
+  margin-bottom: 10px;
+}
+.prev,
+.next {
+  background: khaki;
+  border: none;
+  padding: 5px;
+  color: black;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.prev.disabled,
+.next.disabled {
+  pointer-events: none;
+  box-shadow: none;
+  color: #999;
+}
