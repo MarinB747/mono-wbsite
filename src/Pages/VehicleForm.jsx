@@ -12,12 +12,11 @@ export default function VehicleForm() {
     const getId = prompt("Which vehicle to change, use id");
     const byId = parseInt(getId);
     const newBrand = prompt("Brand");
-    const newBrandSlug = newBrand.toLowerCase();
     const newModel = prompt("Model");
     const newYear = prompt("Year");
     const objRename = store.vehicle.findIndex((obj) => obj.id === byId);
     store.vehicle[objRename].brand = newBrand;
-    store.vehicle[objRename].brand_slug = newBrandSlug;
+    store.vehicle[objRename].brand_slug = newBrand.toLowerCase();
     store.vehicle[objRename].model = newModel;
     store.vehicle[objRename].year = newYear;
   };
