@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 27rem;
+  width: 35rem;
   background-color: khaki;
   position: relative;
   margin-top: 50%;
@@ -63,7 +63,7 @@
 .vehicle__list--header {
   display: flex;
   border-style: double;
-  width: 26.2rem;
+  width: 19.7rem;
   justify-content: space-around;
 }
 .vehicle__list--btn {
@@ -117,4 +117,10 @@
   pointer-events: none;
   box-shadow: none;
   color: #999;
+}
+.vehicle__column--button {
+  border-style: double;
+  width: 4rem;
+  text-align: center;
+  height: 1.5rem;
 }
