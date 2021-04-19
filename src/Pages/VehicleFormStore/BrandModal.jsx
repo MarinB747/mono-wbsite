@@ -35,7 +35,6 @@ export default function BrandModal(props) {
           onChange={(e) => setVehicleBrand(e.target.value)}
         />
         <button type="submit" onClick={pushBrand}>
-          {" "}
           Add Brand
         </button>
       </Modal.Body>

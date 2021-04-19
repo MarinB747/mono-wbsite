@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { StoreContext } from "./VehicleListPage";
 import "./Pages.css";
-import BrandModal from "./modal/BrandModal";
+import BrandModal from "./VehicleFormStore/BrandModal";
 
 export default function VehicleForm() {
   const store = useContext(StoreContext);
@@ -10,21 +10,10 @@ export default function VehicleForm() {
   const [vehicleYear, setVehicleYear] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [modalShow, setModalShow] = useState(false);
-  const onRename = () => {
-    const getId = prompt("Which vehicle to change, use id");
-    const byId = parseInt(getId);
-    const newBrand = prompt("Brand");
-    const newModel = prompt("Model");
-    const newYear = prompt("Year");
-    const objRename = store.vehicle.findIndex((obj) => obj.id === byId);
-    store.vehicle[objRename].brand = newBrand;
-    store.vehicle[objRename].brand_slug = newBrand.toLowerCase();
-    store.vehicle[objRename].model = newModel;
-    store.vehicle[objRename].year = newYear;
-  };
 
   return (
     <form
+      style={{ marginTop: 20 }}
       onSubmit={(e) => {
         store.addVehicle({
           brand: vehicleBrand,
@@ -96,12 +85,7 @@ export default function VehicleForm() {
       >
         Add Brand
       </button>
-      <button className="vehicle__btn--submit" type="button">
-        Delete Vehicle
-      </button>
-      <button className="vehicle__btn--submit" type="button" onClick={onRename}>
-        Rename Vehicle
-      </button>
+
       <BrandModal
         autoFocus={true}
         aria-labelledby="contained-modal-title-vcenter"
