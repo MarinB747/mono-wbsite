@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useObserver } from "mobx-react";
-import { StoreContext } from "./VehicleListPage";
-import "./Pages.css";
+import { StoreContext } from "./Context";
+import "../Pages.css";
 import {
   sortByBrand,
   sortByModel,
@@ -15,6 +15,7 @@ import {
 import { onDelete } from "./VehicleListStore/DeleteFunction";
 import { filterByBrand } from "./VehicleListStore/FilterFunction";
 import { getId, onRename } from "./VehicleListStore/RenameFunctions";
+import { Edit, Delete } from "@material-ui/icons";
 export default function VehicleList(props) {
   const store = useContext(StoreContext);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -92,7 +93,7 @@ export default function VehicleList(props) {
                     value={vehicle.id}
                     onClick={() => onDelete(vehicle.id, store.vehicle)}
                   >
-                    Delete
+                    <Delete />
                   </button>
                 </td>
                 <td className="vehicle__list--wrapper">
@@ -104,7 +105,7 @@ export default function VehicleList(props) {
                       getId(vehicle.id, setRenameId);
                     }}
                   >
-                    Rename
+                    <Edit />
                   </button>
                 </td>
               </tr>
@@ -132,6 +133,7 @@ export default function VehicleList(props) {
       </div>
       {showRenameForm ? (
         <form
+          className="rename__form"
           onSubmit={() =>
             onRename(store.vehicle, renameId, newBrand, newModel, newYear)
           }
@@ -139,7 +141,7 @@ export default function VehicleList(props) {
         >
           <p>Input New Brand</p>
           <select
-            className="vehicle__dropdown"
+            className="rename__dropdown"
             onClick={(e) => setNewBrand(e.target.value)}
           >
             {store.brand.map((brand) => (
@@ -148,6 +150,7 @@ export default function VehicleList(props) {
           </select>
           <p>Input New Model</p>
           <input
+            className="rename__fields"
             type="text"
             placeholder="Vehicle Model"
             value={newModel}
@@ -155,13 +158,14 @@ export default function VehicleList(props) {
           />
           <p>Input New Year</p>
           <input
+            className="rename__fields"
             type="text"
             placeholder="Vehicle Year "
             value={newYear}
             onChange={(e) => setNewYear(e.target.value)}
           />
           <button
-            className="vehicle__btn--submit"
+            className="rename__button"
             type="submit"
             onClick={() => {
               onRename(store.vehicle, renameId, newBrand, newModel, newYear);

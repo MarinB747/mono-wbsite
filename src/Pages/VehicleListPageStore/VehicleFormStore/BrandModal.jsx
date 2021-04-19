@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StoreContext } from "../VehicleListPage";
+import { StoreContext } from "../Context";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 

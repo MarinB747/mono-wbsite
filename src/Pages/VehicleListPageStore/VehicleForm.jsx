@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { StoreContext } from "./VehicleListPage";
-import "./Pages.css";
+import { StoreContext } from "./Context";
+import "../Pages.css";
 import BrandModal from "./VehicleFormStore/BrandModal";
 
 export default function VehicleForm() {
