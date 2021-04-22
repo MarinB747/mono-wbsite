@@ -1,39 +1,38 @@
-import React, { useState, useContext } from "react";
-import { StoreContext } from "./Context";
+import React, { useContext } from "react";
+import { StoreContext } from "./VehicleContext";
+import { FormContext } from "./VehicleFormStore/FormContext";
 import "../Pages.css";
 import BrandModal from "./VehicleFormStore/BrandModal";
+import { useObserver } from "mobx-react-lite";
 
 export default function VehicleForm() {
   const store = useContext(StoreContext);
-  const [vehicleBrand, setVehicleBrand] = useState("");
-  const [vehicleModel, setVehicleModel] = useState("");
-  const [vehicleYear, setVehicleYear] = useState("");
-  const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
+  const form = useContext(FormContext);
 
-  return (
+  return useObserver(() => (
     <form
       style={{ marginTop: 20 }}
       onSubmit={(e) => {
         store.addVehicle({
-          brand: vehicleBrand,
-          brand_slug: vehicleBrand.toLowerCase(),
-          model: vehicleModel,
-          year: vehicleYear,
+          brand: form.vehicleBrand,
+          brand_slug: form.vehicleBrand.toLowerCase(),
+          model: form.vehicleModel,
+          year: form.vehicleYear,
           id:
             Math.max.apply(
               null,
               store.vehicle.map((obj) => obj.id)
-            ) + 1,
+            ) + 1
         });
-
+        form.setVehicleModel("");
+        form.setVehicleYear("");
         e.preventDefault();
       }}
     >
       <div>
         <select
           className="vehicle__dropdown"
-          onClick={(e) => setVehicleBrand(e.target.value)}
+          onClick={(e) => form.setVehicleBrand(e.target.value)}
         >
           {store.brand.map((brand) => (
             <option value={brand.name}>{brand.name}</option>
@@ -43,13 +42,13 @@ export default function VehicleForm() {
           className="vehicle__input"
           type="text"
           placeholder="Vehicle Model"
-          value={vehicleModel}
+          value={form.vehicleModel}
           onChange={(e) => {
-            setVehicleModel(e.target.value);
-            if (vehicleModel && vehicleYear !== "") {
-              setSubmitDisabled(false);
+            form.setVehicleModel(e.target.value);
+            if (form.vehicleModel && form.vehicleYear !== "") {
+              form.setSubmitDisabled(false);
             } else {
-              setSubmitDisabled(true);
+              form.setSubmitDisabled(true);
             }
           }}
         />
@@ -57,15 +56,15 @@ export default function VehicleForm() {
           className="vehicle__input"
           type="text"
           placeholder="Vehicle Year "
-          value={vehicleYear}
+          value={form.vehicleYear}
           onChange={(e) => {
             if (e.target.value.match("^[0-9]{1,4}$") != null) {
-              setVehicleYear(e.target.value);
+              form.setVehicleYear(e.target.value);
             }
-            if (vehicleModel && vehicleYear !== "") {
-              setSubmitDisabled(false);
+            if (form.vehicleModel && form.vehicleYear !== "") {
+              form.setSubmitDisabled(false);
             } else {
-              setSubmitDisabled(true);
+              form.setSubmitDisabled(true);
             }
           }}
         />
@@ -74,14 +73,14 @@ export default function VehicleForm() {
       <button
         className="vehicle__btn--submit"
         type="submit"
-        disabled={submitDisabled}
+        disabled={form.submitDisabled}
       >
         Add Vehicle
       </button>
       <button
         className="vehicle__btn--submit"
         type="button"
-        onClick={() => setModalShow(true)}
+        onClick={() => form.setModalShow(true)}
       >
         Add Brand
       </button>
@@ -89,10 +88,10 @@ export default function VehicleForm() {
       <BrandModal
         autoFocus={true}
         aria-labelledby="contained-modal-title-vcenter"
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        onSubmit={() => setModalShow(false)}
+        show={form.modalShow}
+        onHide={() => form.setModalShow(false)}
+        onSubmit={() => form.setModalShow(false)}
       />
     </form>
-  );
+  ));
 }

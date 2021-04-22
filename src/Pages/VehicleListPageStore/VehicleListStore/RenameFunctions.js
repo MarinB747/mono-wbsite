@@ -1,6 +1,3 @@
-export const getId = (e, item) => {
-  item(e);
-};
 export const onRename = (e, item, Brand, Model, Year) => {
   const findId = item;
   const byId = parseInt(findId);

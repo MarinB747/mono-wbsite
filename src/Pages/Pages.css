@@ -112,7 +112,7 @@
 .next.disabled {
   pointer-events: none;
   box-shadow: none;
-  color: #999;
+  size: 0px;
 }
 .vehicle__column--button {
   width: 1.5rem;
