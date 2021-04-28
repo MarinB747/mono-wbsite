@@ -12,15 +12,13 @@ class ListStore {
   @observable currentPage = 1;
   @observable filterBrand = 0;
   @observable pageCount = [{ pages: 5 }, { pages: 10 }, { pages: 20 }];
-  @observable vehicleBrand = "BMW";
+  @observable vehicleBrand = "";
   @observable vehicleModel = "";
   @observable vehicleYear = "";
   @observable renameId = "";
   @observable showRenameForm = false;
   @observable startIndex = 0;
   @observable endIndex = 5;
-  @observable placeholderModel = "";
-  @observable placeholderYear = "";
   @observable submitDisabled = true;
 
   @action setRowsPerPage(e) {
@@ -70,13 +68,17 @@ class ListStore {
     vehicles.splice(vehicle, 1);
     return vehicles;
   }
+  @action setPlaceholderBrand(e) {
+    let placeholderName = e.find((obj) => obj.id === this.renameId);
+    this.vehicleBrand = placeholderName.brand;
+  }
   @action setPlaceholderModel(e) {
     let placeholderName = e.find((obj) => obj.id === this.renameId);
-    this.placeholderModel = placeholderName.model;
+    this.vehicleModel = placeholderName.model;
   }
   @action setPlaceholderYear(e) {
     let placeholderName = e.find((obj) => obj.id === this.renameId);
-    this.placeholderYear = placeholderName.year;
+    this.vehicleYear = placeholderName.year;
   }
   @action
   onRename(e) {
@@ -197,6 +199,9 @@ class List extends React.Component {
                         this.props.ListStore.setPlaceholderYear(
                           this.props.VehicleStore.vehicle
                         );
+                        this.props.ListStore.setPlaceholderBrand(
+                          this.props.VehicleStore.vehicle
+                        );
                       }}
                     >
                       <Edit />
@@ -277,7 +282,6 @@ class List extends React.Component {
             <input
               className="rename__fields"
               type="text"
-              placeholder={this.props.ListStore.placeholderModel}
               value={this.props.ListStore.vehicleModel}
               onChange={(e) => {
                 this.props.ListStore.setVehicleModel(e.target.value);
@@ -295,7 +299,6 @@ class List extends React.Component {
             <input
               className="rename__fields"
               type="text"
-              placeholder={this.props.ListStore.placeholderYear}
               value={this.props.ListStore.vehicleYear}
               onChange={(e) => {
                 if (e.currentTarget.value.match("^[0-9]{1,4}$") != null) {
