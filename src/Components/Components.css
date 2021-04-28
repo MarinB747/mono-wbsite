@@ -15,6 +15,13 @@
   font-size: 1.5rem;
   align-self: center;
   font-weight: bolder;
+  margin-left: 25px;
+  color: black;
+}
+.navbar__title:hover {
+  font-size: 1.5rem;
+  align-self: center;
+  font-weight: bolder;
   text-decoration: none;
   color: black;
   margin-left: 25px;
@@ -35,6 +42,8 @@
 }
 .navbar__links--item:hover {
   padding-bottom: 1.3rem;
-  border-bottom: 2px solid rgb(0, 0, 0);
+  border-bottom: 3px solid rgb(0, 0, 0);
   transition: all 0.2s ease-out;
+  text-decoration: none;
+  color: black;
 }

@@ -1,14 +1,14 @@
 const {
+  addDecoratorsLegacy,
   override,
   disableEsLint,
-  addDecoratorsLegacy,
-  fixBabelImports,
+  fixBabelImports
 } = require("customize-cra");
 module.exports = override(
-  disableEsLint(),
   addDecoratorsLegacy(),
+  disableEsLint(),
   fixBabelImports("react-app-rewire-mobx", {
     libraryDirectory: "",
-    camel2DashComponentName: false,
+    camel2DashComponentName: false
   })
 );

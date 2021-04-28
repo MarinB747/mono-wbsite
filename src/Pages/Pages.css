@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 25rem;
+  width: 27rem;
   background-color: khaki;
   position: relative;
   margin-top: 50%;
@@ -58,12 +58,20 @@
   list-style-type: none;
   padding: 0;
   border-collapse: collapse;
+  position: relative;
+  left: 5.5%;
+}
+.vehicle__dropdown--header {
+  position: relative;
+  left: 5.5%;
 }
 .vehicle__list--header {
   display: flex;
   border-style: double;
   width: 19.5rem;
   justify-content: space-around;
+  position: relative;
+  left: 5.5%;
 }
 .vehicle__list--btn {
   border-width: 0rem;
@@ -82,6 +90,11 @@
 }
 
 /*  VEHICLEFORM STYLES  */
+.vehicle__form--container {
+  margin-top: 20px;
+  position: relative;
+  right: 1%;
+}
 .vehicle__input {
   width: 6.75rem;
 }
@@ -92,6 +105,7 @@
   position: relative;
   width: 48%;
   margin-right: 5px;
+  left: 24%;
 }
 .pagination__wrapper {
   position: relative;
@@ -128,11 +142,11 @@
 
 .rename__form > p {
   position: relative;
-  left: 30%;
+  left: 32%;
 }
 .rename__dropdown {
   position: relative;
-  left: 32%;
+  left: 34%;
 }
 .rename__fields {
   position: relative;
@@ -143,6 +157,37 @@
   margin-bottom: 1rem;
   text-align: center;
   position: relative;
-  width: 50%;
-  left: 23%;
+  width: 52%;
+  left: 21%;
+}
+.brand__list--header {
+  display: flex;
+  border-style: double;
+  width: 6.5rem;
+  justify-content: space-around;
+  position: relative;
+  left: 12%;
+}
+.brand__table {
+  flex-direction: column;
+  border-radius: 1rem;
+  border-style: double;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18rem;
+  background-color: khaki;
+  position: relative;
+  margin-top: 50%;
+}
+.brand__list {
+  display: flex;
+  flex-direction: row;
+  width: 99%;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  border-collapse: collapse;
+  position: relative;
+  left: 12%;
 }
