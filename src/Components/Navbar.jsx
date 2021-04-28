@@ -13,7 +13,10 @@ export default function Navbar() {
           Home
         </Link>
         <Link className="navbar__links--item" to="/store">
-          Store
+          Vehicle
+        </Link>
+        <Link className="navbar__links--item" to="/brand">
+          Brand
         </Link>
         <Link className="navbar__links--item" to="/about">
           About

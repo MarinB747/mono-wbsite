@@ -8,13 +8,15 @@ import { Provider } from "mobx-react";
 import { VehicleStore } from "./Pages/VehicleListPageStore/VehicleStore";
 import { ListStore } from "./Pages/VehicleListPageStore/VehicleListStore";
 import { FormStore } from "./Pages/VehicleListPageStore/VehicleFormStore";
-
+import { BrandListPage } from "./Pages/BrandListPage.jsx";
+import { BrandStore } from "./Pages/VehicleListPageStore/BrandListStore.jsx";
 function App() {
   return (
     <Provider
       VehicleStore={new VehicleStore()}
       ListStore={new ListStore()}
       FormStore={new FormStore()}
+      BrandStore={new BrandStore()}
     >
       <div className="app">
         <Router>
@@ -22,6 +24,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/store" exact component={VehicleListPage} />
+            <Route path="/brand" exact component={BrandListPage} />
             <Route path="/about" exact component={About} />
           </Switch>
         </Router>

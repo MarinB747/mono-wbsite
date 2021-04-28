@@ -23,18 +23,14 @@ class ListStore {
 
   @action setRowsPerPage(e) {
     this.rowsPerPage = parseInt(e);
-    console.log(this.rowsPerPage, this.startIndex, this.endIndex);
   }
   @action setPreviousPage() {
     this.currentPage = parseInt(this.currentPage - 1);
-    console.log(this.currentPage);
   }
   @action setNextPage() {
     this.currentPage = parseInt(this.currentPage + 1);
-    console.log(this.currentPage);
   }
   @action filterByBrand(e) {
-    console.log(e);
     this.filterBrand = parseInt(e);
   }
   @action setVehilceBrand(e) {
@@ -63,7 +59,6 @@ class ListStore {
     item.sort((b, a) => (a.year < b.year ? 1 : a.year > b.year ? -1 : 0));
   }
   @action onDelete(id, vehicles) {
-    console.log(id, vehicles);
     const vehicle = vehicles.findIndex((item) => item.id === id);
     vehicles.splice(vehicle, 1);
     return vehicles;
@@ -90,11 +85,9 @@ class ListStore {
   }
   @action setStartIndex() {
     this.startIndex = this.currentPage * this.rowsPerPage - this.rowsPerPage;
-    console.log(this.startIndex);
   }
   @action setEndIndex() {
     this.endIndex = this.startIndex + this.rowsPerPage;
-    console.log(this.endIndex);
   }
   @action setSubmitDisabled(e) {
     this.submitDisabled = e;
