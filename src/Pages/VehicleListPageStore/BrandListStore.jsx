@@ -1,7 +1,7 @@
 import React from "react";
 import { observable, action, makeObservable } from "mobx";
 import { inject, observer } from "mobx-react";
-import { Edit } from "@material-ui/icons";
+import { Edit, Delete } from "@material-ui/icons";
 import "../Pages.css";
 
 class BrandStore {
@@ -79,6 +79,7 @@ class Brand extends React.Component {
   render() {
     return (
       <div>
+        {this.props.VehicleStore.getBrandId()}
         <div className="brand__list--header">
           <button
             className="brand__list--btn"
@@ -102,7 +103,31 @@ class Brand extends React.Component {
                   <td className="vehicle__list--wrapper">
                     <li className="vehicle__column">{brand.name}</li>
                   </td>
-
+                  <td className="vehicle__list--wrapper">
+                    <button
+                      className="vehicle__column--button"
+                      value={brand.id}
+                      onClick={() => {
+                        if (
+                          this.props.VehicleStore.vehicle.some(
+                            (e) => e.brand === brand.name
+                          )
+                        )
+                          return alert(
+                            "Can't delete a brand until there are no vehicles conected to it"
+                          );
+                        else {
+                          let x = this.props.BrandStore.onDelete(
+                            brand.id,
+                            this.props.VehicleStore.brand
+                          );
+                          this.props.VehicleStore.brand = x;
+                        }
+                      }}
+                    >
+                      <Delete />
+                    </button>
+                  </td>
                   <td className="vehicle__list--wrapper">
                     <button
                       className="vehicle__column--button"
@@ -173,9 +198,15 @@ class Brand extends React.Component {
             onSubmit={(e) => {
               e.preventDefault();
               this.props.BrandStore.onRename(this.props.VehicleStore.brand);
-              this.props.BrandStore.setRenameBrand("");
               this.props.BrandStore.setRenameSubmitDisabled(true);
               this.props.BrandStore.setShowRenameForm();
+              this.props.VehicleStore.vehicle.forEach((obj) => {
+                const targetBrand = this.props.VehicleStore.brand.find(
+                  (e) => e.id === obj.brand_id
+                );
+                obj.brand = targetBrand.name;
+              });
+              this.props.BrandStore.setRenameBrand("");
             }}
             value={this.props.BrandStore.showRenameForm}
           >
