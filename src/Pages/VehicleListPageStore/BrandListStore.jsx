@@ -45,9 +45,12 @@ class BrandStore {
     item.sort((b, a) => (a.name < b.name ? 1 : a.name > b.name ? -1 : 0));
   }
 
-  @action onDelete(id, brands) {
+  @action onDelete(id, brands, vehicles) {
     const brand = brands.findIndex((item) => item.id === id);
     brands.splice(brand, 1);
+    const vehicleNum = vehicles.filter((item) => item.brand_id === id).length;
+    const vehicle = vehicles.findIndex((item) => item.brand_id === id);
+    vehicles.splice(vehicle, vehicleNum);
     return brands;
   }
   @action setPlaceholderBrand(e) {
@@ -108,21 +111,12 @@ class Brand extends React.Component {
                       className="vehicle__column--button"
                       value={brand.id}
                       onClick={() => {
-                        if (
-                          this.props.VehicleStore.vehicle.some(
-                            (e) => e.brand === brand.name
-                          )
-                        )
-                          return alert(
-                            "Can't delete a brand until there are no vehicles conected to it"
-                          );
-                        else {
-                          let x = this.props.BrandStore.onDelete(
-                            brand.id,
-                            this.props.VehicleStore.brand
-                          );
-                          this.props.VehicleStore.brand = x;
-                        }
+                        let x = this.props.BrandStore.onDelete(
+                          brand.id,
+                          this.props.VehicleStore.brand,
+                          this.props.VehicleStore.vehicle
+                        );
+                        this.props.VehicleStore.brand = x;
                       }}
                     >
                       <Delete />
