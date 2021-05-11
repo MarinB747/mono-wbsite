@@ -17,7 +17,7 @@ class VehicleStore {
   @observable startIndex = 0;
   @observable endIndex = 5;
   @observable renameSubmitDisabled = true;
-  @observable formVehicleBrand = "BMW";
+  @observable formVehicleBrand = "";
   @observable formVehicleModel = "";
   @observable formVehicleYear = "";
   @observable formSubmitDisabled = true;

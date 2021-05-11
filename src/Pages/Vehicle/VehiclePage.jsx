@@ -270,16 +270,21 @@ class VehiclePage extends React.Component {
           className="vehicle__form--container"
           onSubmit={e => {
             e.preventDefault();
-            this.props.PageStore.VehicleService.addVehicle({
-              brand: this.props.PageStore.VehicleStore.formVehicleBrand,
-              model: this.props.PageStore.VehicleStore.formVehicleModel,
-              year: this.props.PageStore.VehicleStore.formVehicleYear,
-              id:
-                Math.max.apply(
-                  null,
-                  this.props.PageStore.VehicleService.vehicle.map(obj => obj.id)
-                ) + 1
-            });
+            this.props.PageStore.VehicleService.addVehicle(
+              {
+                brand: this.props.PageStore.VehicleStore.formVehicleBrand,
+                model: this.props.PageStore.VehicleStore.formVehicleModel,
+                year: this.props.PageStore.VehicleStore.formVehicleYear,
+                id:
+                  Math.max.apply(
+                    null,
+                    this.props.PageStore.VehicleService.vehicle.map(
+                      obj => obj.id
+                    )
+                  ) + 1
+              },
+              this.props.PageStore.VehicleStore.formVehicleBrand
+            );
             this.props.PageStore.VehicleStore.setFormVehicleModel("");
             this.props.PageStore.VehicleStore.setFormVehicleYear("");
           }}

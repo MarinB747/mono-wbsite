@@ -92,8 +92,13 @@ class VehicleService {
   ];
 
   @action.bound
-  addVehicle(e) {
-    this.vehicle.push(e);
+  addVehicle(e, item) {
+    let nextId = parseInt(this.vehicle.map(x => x.brand).lastIndexOf(item) + 1);
+    if (nextId === 0) {
+      nextId = this.vehicle.length;
+    }
+    console.log(nextId);
+    this.vehicle.splice(nextId, 0, e);
   }
 
   @action.bound
