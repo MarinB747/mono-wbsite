@@ -1,30 +1,23 @@
-import Home from "./Pages/Home.jsx";
-import { VehicleListPage } from "./Pages/VehicleListPage";
-import About from "./Pages/About.jsx";
+import Home from "./Pages/Home/Home.jsx";
+import { VehiclePage } from "./Pages/Vehicle/VehiclePage";
+import About from "./Pages/About/About.jsx";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "mobx-react";
-import { VehicleStore } from "./Pages/VehicleListPageStore/VehicleStore";
-import { ListStore } from "./Pages/VehicleListPageStore/VehicleListStore";
-import { FormStore } from "./Pages/VehicleListPageStore/VehicleFormStore";
-import { BrandListPage } from "./Pages/BrandListPage.jsx";
-import { BrandStore } from "./Pages/VehicleListPageStore/BrandListStore.jsx";
+import { BrandPage } from "./Pages//Brand/BrandPage.jsx";
+import { PageStore } from "./Store/PageStore";
+
 function App() {
   return (
-    <Provider
-      VehicleStore={new VehicleStore()}
-      ListStore={new ListStore()}
-      FormStore={new FormStore()}
-      BrandStore={new BrandStore()}
-    >
+    <Provider PageStore={new PageStore()}>
       <div className="app">
         <Router>
           <Navbar />
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/store" exact component={VehicleListPage} />
-            <Route path="/brand" exact component={BrandListPage} />
+            <Route path="/store" exact component={VehiclePage} />
+            <Route path="/brand" exact component={BrandPage} />
             <Route path="/about" exact component={About} />
           </Switch>
         </Router>

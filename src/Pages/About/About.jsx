@@ -1,4 +1,4 @@
-import "./Pages.css";
+import "../Pages.css";
 
 export default function About() {
   return (

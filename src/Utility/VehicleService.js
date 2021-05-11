@@ -1,29 +1,9 @@
-import React from "react";
 import { observable, action, makeObservable } from "mobx";
-import { observer } from "mobx-react";
-
-class VehicleStore {
+class VehicleService {
   constructor() {
     makeObservable(this);
   }
-  @observable brand = [
-    {
-      id: 1,
-      name: "BMW"
-    },
-    {
-      id: 2,
-      name: "Audi"
-    },
-    {
-      id: 3,
-      name: "Volkswagen"
-    },
-    {
-      id: 4,
-      name: "Ford"
-    }
-  ];
+
   @observable vehicle = [
     {
       id: 1,
@@ -115,24 +95,13 @@ class VehicleStore {
   addVehicle(e) {
     this.vehicle.push(e);
   }
-  @action.bound
-  addBrand(e) {
-    this.brand.push(e);
-  }
 
   @action.bound
-  getBrandId() {
-    this.vehicle.forEach((obj) => {
-      const targetBrand = this.brand.find((e) => e.name === obj.brand);
-      obj.brand_id = targetBrand.id;
-    });
+  onDelete(id, vehicles) {
+    const vehicle = vehicles.findIndex(item => item.id === id);
+    vehicles.splice(vehicle, 1);
+    return vehicles;
   }
 }
 
-@observer
-class Vehicle extends React.Component {
-  render() {
-    return null;
-  }
-}
-export { Vehicle, VehicleStore };
+export { VehicleService };

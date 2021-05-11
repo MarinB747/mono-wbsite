@@ -59,11 +59,11 @@
   padding: 0;
   border-collapse: collapse;
   position: relative;
-  left: 5.5%;
+  left: 13%;
 }
 .vehicle__dropdown--header {
   position: relative;
-  left: 5.5%;
+  right: 25.3%;
 }
 .vehicle__list--header {
   display: flex;
@@ -71,7 +71,6 @@
   width: 19.5rem;
   justify-content: space-around;
   position: relative;
-  left: 5.5%;
 }
 .vehicle__list--btn {
   border-width: 0rem;
@@ -93,7 +92,6 @@
 .vehicle__form--container {
   margin-top: 20px;
   position: relative;
-  right: 1%;
 }
 .vehicle__input {
   width: 6.75rem;
@@ -105,11 +103,11 @@
   position: relative;
   width: 48%;
   margin-right: 5px;
-  left: 24%;
+  left: 23%;
 }
 .pagination__wrapper {
   position: relative;
-  left: 50%;
+  left: 27%;
   margin-bottom: 10px;
 }
 .prev,
@@ -142,15 +140,15 @@
 
 .rename__form > p {
   position: relative;
-  left: 32%;
+  left: 29%;
 }
 .rename__dropdown {
   position: relative;
-  left: 34%;
+  left: 31%;
 }
 .rename__fields {
   position: relative;
-  left: 23%;
+  left: 18%;
 }
 .rename__button {
   margin-top: 1rem;
@@ -167,7 +165,7 @@
   width: 6.5rem;
   justify-content: space-around;
   position: relative;
-  left: 18%;
+  right: 3.5%;
 }
 
 .brand__list {
@@ -179,7 +177,7 @@
   padding: 0;
   border-collapse: collapse;
   position: relative;
-  left: 18%;
+  left: 24%;
 }
 .brand__table {
   flex-direction: column;
@@ -199,7 +197,6 @@
 }
 .pagination__wrapper--brand {
   position: relative;
-  left: 18%;
   margin-bottom: 10px;
 }
 
@@ -207,7 +204,7 @@
   border-style: double;
   width: 10rem;
   position: relative;
-  left: 5%;
+  right: 2%;
   text-align: center;
 }
 
@@ -218,7 +215,7 @@
 .brand__input {
   width: 6.5rem;
   position: relative;
-  left: 18%;
+  left: 20%;
 }
 .brand__btn--submit {
   margin-top: 0.5rem;
@@ -226,7 +223,7 @@
   position: relative;
   width: 48%;
   margin-right: 5px;
-  left: 21%;
+  left: 25%;
   margin-bottom: 10px;
 }
 .rename__button--brand {
@@ -235,4 +232,10 @@
   text-align: center;
   position: relative;
   width: 52%;
+}
+.brand__dropdown--header {
+  position: relative;
+  right: 3%;
+  width: 6.5rem;
+  margin-bottom: 5px;
 }
