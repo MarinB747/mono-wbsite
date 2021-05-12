@@ -1,7 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { Edit, Delete } from "@material-ui/icons";
-import "../Pages.css";
+import "./Pages.css";
 
 @inject("PageStore")
 @observer
@@ -37,7 +37,15 @@ class BrandPage extends React.Component {
         <table className="brand__list">
           <tb>
             {this.props.PageStore.BrandService.brand
-              .filter(this.props.PageStore.BrandStore.filterMethod)
+              .filter(item => {
+                if (this.props.PageStore.BrandStore.filterBrand !== 0) {
+                  return (
+                    item.id === this.props.PageStore.BrandStore.filterBrand
+                  );
+                } else {
+                  return true;
+                }
+              })
               .slice(
                 this.props.PageStore.BrandStore.startIndex,
                 this.props.PageStore.BrandStore.endIndex
@@ -68,11 +76,11 @@ class BrandPage extends React.Component {
                       className="vehicle__column--button"
                       value={brand.id}
                       onClick={e => {
-                        this.props.PageStore.BrandStore.setRenameId(
+                        this.props.PageStore.BrandService.setRenameId(
                           e.currentTarget.value
                         );
                         this.props.PageStore.BrandStore.setShowRenameForm();
-                        this.props.PageStore.BrandStore.setPlaceholderBrand(
+                        this.props.PageStore.BrandService.setPlaceholderBrand(
                           this.props.PageStore.BrandService.brand
                         );
                       }}
@@ -118,10 +126,7 @@ class BrandPage extends React.Component {
             }}
             className={`next ${
               this.props.PageStore.BrandStore.currentPage ===
-              Math.ceil(
-                this.props.PageStore.BrandService.brand.length /
-                  this.props.PageStore.BrandStore.rowsPerPage
-              )
+              this.props.PageStore.brandLastPage
                 ? "disabled"
                 : ""
             }`}
@@ -134,18 +139,15 @@ class BrandPage extends React.Component {
             className="rename__form--brand"
             onSubmit={e => {
               e.preventDefault();
-              this.props.PageStore.BrandStore.onRename(
+              this.props.PageStore.BrandService.onRename(
                 this.props.PageStore.BrandService.brand
               );
               this.props.PageStore.BrandStore.setRenameSubmitDisabled(true);
               this.props.PageStore.BrandStore.setShowRenameForm();
-              this.props.PageStore.VehicleService.vehicle.forEach(obj => {
-                const targetBrand = this.props.PageStore.BrandService.brand.find(
-                  e => e.id === obj.brand_id
-                );
-                obj.brand = targetBrand.name;
-              });
-              this.props.PageStore.BrandStore.setRenameBrand("");
+              this.props.PageStore.VehicleService.vehicle.forEach(
+                this.props.PageStore.renameVehicleByBrand
+              );
+              this.props.PageStore.BrandService.setRenameBrand("");
             }}
             value={this.props.PageStore.BrandStore.showRenameForm}
           >
@@ -153,10 +155,12 @@ class BrandPage extends React.Component {
             <input
               className="rename__field--brand"
               type="text"
-              value={this.props.PageStore.BrandStore.renameBrand}
+              value={this.props.PageStore.BrandService.renameBrand}
               onChange={e => {
-                this.props.PageStore.BrandStore.setRenameBrand(e.target.value);
-                if (this.props.PageStore.BrandStore.renameBrand !== "") {
+                this.props.PageStore.BrandService.setRenameBrand(
+                  e.target.value
+                );
+                if (this.props.PageStore.BrandService.renameBrand !== "") {
                   this.props.PageStore.BrandStore.setRenameSubmitDisabled(
                     false
                   );
@@ -179,11 +183,7 @@ class BrandPage extends React.Component {
           onSubmit={e => {
             this.props.PageStore.BrandService.addBrand({
               name: this.props.PageStore.BrandStore.vehicleBrand,
-              id:
-                Math.max.apply(
-                  null,
-                  this.props.PageStore.BrandService.brand.map(obj => obj.id)
-                ) + 1
+              id: this.props.PageStore.brandId
             });
 
             e.preventDefault();
@@ -216,8 +216,7 @@ class BrandPage extends React.Component {
             Add Brand
           </button>
         </form>
-        {/*         {this.props.PageStore.getBrandId()}
-         */}{" "}
+        {this.props.PageStore.getBrandId()}
       </div>
     );
   }

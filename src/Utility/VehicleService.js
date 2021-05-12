@@ -3,7 +3,10 @@ class VehicleService {
   constructor() {
     makeObservable(this);
   }
-
+  @observable renameVehicleBrand = "";
+  @observable renameVehicleModel = "";
+  @observable renameVehicleYear = "";
+  @observable renameId = "";
   @observable vehicle = [
     {
       id: 1,
@@ -97,7 +100,6 @@ class VehicleService {
     if (nextId === 0) {
       nextId = this.vehicle.length;
     }
-    console.log(nextId);
     this.vehicle.splice(nextId, 0, e);
   }
 
@@ -106,6 +108,53 @@ class VehicleService {
     const vehicle = vehicles.findIndex(item => item.id === id);
     vehicles.splice(vehicle, 1);
     return vehicles;
+  }
+  @action
+  onRename(e) {
+    const objId = e.findIndex(obj => obj.id === this.renameId);
+    const objRename = e[objId];
+    if (objRename.brand === this.renameVehicleBrand) {
+      objRename.brand = this.renameVehicleBrand;
+      objRename.model = this.renameVehicleModel;
+      objRename.year = this.renameVehicleYear;
+    } else {
+      objRename.brand = this.renameVehicleBrand;
+      objRename.model = this.renameVehicleModel;
+      objRename.year = this.renameVehicleYear;
+
+      e.splice(objId, 1);
+      let nextId = parseInt(
+        e.map(x => x.brand).lastIndexOf(this.renameVehicleBrand) + 1
+      );
+      if (nextId === 0) {
+        nextId = this.vehicle.length;
+      }
+      e.splice(nextId, 0, objRename);
+    }
+  }
+  @action getRenameId(e) {
+    this.renameId = parseInt(e);
+  }
+  @action setPlaceholderBrand(e) {
+    let placeholderName = e.find(obj => obj.id === this.renameId);
+    this.renameVehicleBrand = placeholderName.brand;
+  }
+  @action setPlaceholderModel(e) {
+    let placeholderName = e.find(obj => obj.id === this.renameId);
+    this.renameVehicleModel = placeholderName.model;
+  }
+  @action setPlaceholderYear(e) {
+    let placeholderName = e.find(obj => obj.id === this.renameId);
+    this.renameVehicleYear = placeholderName.year;
+  }
+  @action setRenameVehicleBrand(e) {
+    this.renameVehicleBrand = e;
+  }
+  @action setRenameVehicleModel(e) {
+    this.renameVehicleModel = e;
+  }
+  @action setRenameVehicleYear(e) {
+    this.renameVehicleYear = e;
   }
 }
 

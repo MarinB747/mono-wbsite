@@ -4,6 +4,8 @@ class BrandService {
   constructor() {
     makeObservable(this);
   }
+  @observable renameBrand = "";
+  @observable renameId = "";
   @observable brand = [
     {
       id: 1,
@@ -34,6 +36,21 @@ class BrandService {
     const vehicle = vehicles.findIndex(item => item.brand_id === id);
     vehicles.splice(vehicle, vehicleNum);
     return brands;
+  }
+  onRename(e) {
+    const objId = e.findIndex(obj => obj.id === this.renameId);
+    const objRename = e[objId];
+    objRename.name = this.renameBrand;
+  }
+  @action.bound setRenameBrand(e) {
+    this.renameBrand = e;
+  }
+  @action.bound setRenameId(e) {
+    this.renameId = parseInt(e);
+  }
+  @action.bound setPlaceholderBrand(e) {
+    let placeholderName = e.find(obj => obj.id === this.renameId);
+    this.renameBrand = placeholderName.name;
   }
 }
 

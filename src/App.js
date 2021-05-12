@@ -1,11 +1,11 @@
-import Home from "./Pages/Home/Home.jsx";
-import { VehiclePage } from "./Pages/Vehicle/VehiclePage";
-import About from "./Pages/About/About.jsx";
+import Home from "./Pages/Home.jsx";
+import { VehiclePage } from "./Pages/VehiclePage";
+import About from "./Pages/About.jsx";
 import "./App.css";
 import Navbar from "./Components/Navbar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "mobx-react";
-import { BrandPage } from "./Pages//Brand/BrandPage.jsx";
+import { BrandPage } from "./Pages/BrandPage.jsx";
 import { PageStore } from "./Store/PageStore";
 
 function App() {
