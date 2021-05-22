@@ -6,11 +6,15 @@ import Navbar from "./Components/Navbar.jsx";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "mobx-react";
 import { BrandPage } from "./Pages/BrandPage.jsx";
-import { PageStore } from "./Store/PageStore";
+import { pageStore } from "./Store/PageStore";
 
 function App() {
   return (
-    <Provider PageStore={new PageStore()}>
+    <Provider
+      PageStore={pageStore}
+      VehicleStore={pageStore.VehicleStore}
+      BrandStore={pageStore.BrandStore}
+    >
       <div className="app">
         <Router>
           <Navbar />

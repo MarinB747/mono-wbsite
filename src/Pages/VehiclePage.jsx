@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { Edit, Delete } from "@material-ui/icons";
 import "./Pages.css";
 
-@inject("PageStore")
+@inject("VehicleStore")
 @observer
 class VehiclePage extends React.Component {
   render() {
@@ -11,13 +11,11 @@ class VehiclePage extends React.Component {
       <div className="vehicle__table">
         <select
           className="vehicle__dropdown--header"
-          value={this.props.PageStore.BrandService.brand.name}
-          onClick={e =>
-            this.props.PageStore.VehicleStore.filterByBrand(e.target.value)
-          }
+          defaultValue={this.props.VehicleStore.filterBrand}
+          onClick={e => this.props.VehicleStore.filterByBrand(e.target.value)}
         >
           <option value={0}>All Brands</option>
-          {this.props.PageStore.BrandService.brand.map(brand => (
+          {this.props.VehicleStore.getBrands(brand => (
             <option value={brand.id}>{brand.name}</option>
           ))}
         </select>
@@ -25,142 +23,92 @@ class VehiclePage extends React.Component {
           <button
             className="vehicle__list--btn"
             type="button"
-            onClick={() =>
-              this.props.PageStore.VehicleStore.sortByBrand(
-                this.props.PageStore.VehicleService.vehicle
-              )
-            }
+            onClick={() => this.props.VehicleStore.sortByBrand()}
           >
-            Brand
+            Brand{this.props.VehicleStore.sortBrand ? <text>▼</text> : null}
           </button>
           <button
             className="vehicle__list--btn"
             type="button"
-            onClick={() =>
-              this.props.PageStore.VehicleStore.sortByModel(
-                this.props.PageStore.VehicleService.vehicle
-              )
-            }
+            onClick={() => this.props.VehicleStore.sortByModel()}
           >
             Model
+            {this.props.VehicleStore.sortModel ? <text>▼</text> : null}
           </button>
           <button
             className="vehicle__list--btn"
             type="button"
-            onClick={() =>
-              this.props.PageStore.VehicleStore.sortByYear(
-                this.props.PageStore.VehicleService.vehicle
-              )
-            }
+            onClick={() => this.props.VehicleStore.sortByYear()}
           >
-            Year
+            Year{this.props.VehicleStore.sortYear ? <text>▼</text> : null}
           </button>
         </div>
         <table className="vehicle__list">
           <tb>
-            {this.props.PageStore.VehicleService.vehicle
-              .filter(item => {
-                if (this.props.PageStore.VehicleStore.filterBrand !== 0) {
-                  return (
-                    item.brand_id ===
-                    this.props.PageStore.VehicleStore.filterBrand
-                  );
-                } else {
-                  return true;
-                }
-              })
-              .slice(
-                this.props.PageStore.VehicleStore.startIndex,
-                this.props.PageStore.VehicleStore.endIndex
-              )
-              .map(vehicle => (
-                <tr key={vehicle.id}>
-                  <td className="vehicle__list--wrapper">
-                    <li className="vehicle__column">{vehicle.brand}</li>
-                  </td>
-                  <td className="vehicle__list--wrapper">
-                    <li className="vehicle__column">{vehicle.model}</li>
-                  </td>
-                  <td className="vehicle__list--wrapper">
-                    <li className="vehicle__column">{vehicle.year}</li>
-                  </td>
-                  <td className="vehicle__list--wrapper">
-                    <button
-                      className="vehicle__column--button"
-                      value={vehicle.id}
-                      onClick={() => {
-                        let x = this.props.PageStore.VehicleService.onDelete(
-                          vehicle.id,
-                          this.props.PageStore.VehicleService.vehicle
-                        );
-                        this.props.PageStore.VehicleService.vehicle = x;
-                      }}
-                    >
-                      <Delete />
-                    </button>
-                  </td>
-                  <td className="vehicle__list--wrapper">
-                    <button
-                      className="vehicle__column--button"
-                      value={vehicle.id}
-                      onClick={e => {
-                        this.props.PageStore.VehicleService.getRenameId(
-                          e.currentTarget.value
-                        );
-                        this.props.PageStore.VehicleStore.setShowRenameForm();
-                        this.props.PageStore.VehicleService.setPlaceholderModel(
-                          this.props.PageStore.VehicleService.vehicle
-                        );
-                        this.props.PageStore.VehicleService.setPlaceholderYear(
-                          this.props.PageStore.VehicleService.vehicle
-                        );
-                        this.props.PageStore.VehicleService.setPlaceholderBrand(
-                          this.props.PageStore.VehicleService.vehicle
-                        );
-                      }}
-                    >
-                      <Edit />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+            {this.props.VehicleStore.getVehicles(vehicle => (
+              <tr key={vehicle.id}>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.name}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.model}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <li className="vehicle__column">{vehicle.year}</li>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <button
+                    className="vehicle__column--button"
+                    value={vehicle.id}
+                    onClick={() => {
+                      this.props.VehicleStore.onDelete(vehicle.id);
+                    }}
+                  >
+                    <Delete />
+                  </button>
+                </td>
+                <td className="vehicle__list--wrapper">
+                  <button
+                    className="vehicle__column--button"
+                    value={vehicle.id}
+                    onClick={() => {
+                      this.props.VehicleStore.renameFormMethod(vehicle.id);
+                    }}
+                  >
+                    <Edit />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tb>
         </table>
         <div className="pagination__wrapper">
           <select
             onChange={e => {
-              this.props.PageStore.VehicleStore.setRowsPerPage(e.target.value);
-              this.props.PageStore.VehicleStore.setStartIndex();
-              this.props.PageStore.VehicleStore.setEndIndex();
+              this.props.VehicleStore.pagingMethod(e.target.value);
             }}
           >
-            {this.props.PageStore.VehicleStore.pageCount.map(item => (
+            {this.props.VehicleStore.pageCount.map(item => (
               <option value={item.pages}>{item.pages}</option>
             ))}
           </select>
           <button
             onClick={() => {
-              this.props.PageStore.VehicleStore.setPreviousPage();
-              this.props.PageStore.VehicleStore.setStartIndex();
-              this.props.PageStore.VehicleStore.setEndIndex();
+              this.props.VehicleStore.previousPageMethod();
             }}
             className={`prev ${
-              this.props.PageStore.VehicleStore.currentPage === 1
-                ? "disabled"
-                : ""
+              this.props.VehicleStore.currentPage === 1 ? "disabled" : ""
             }`}
           >
             ◀
           </button>
           <button
             onClick={() => {
-              this.props.PageStore.VehicleStore.setNextPage();
-              this.props.PageStore.VehicleStore.setStartIndex();
-              this.props.PageStore.VehicleStore.setEndIndex();
+              this.props.VehicleStore.nextPageMethod();
             }}
             className={`next ${
-              this.props.PageStore.VehicleStore.currentPage ===
-              this.props.PageStore.vehicleLastPage
+              this.props.VehicleStore.currentPage ===
+              this.props.VehicleStore.vehicleLastPage
                 ? "disabled"
                 : ""
             }`}
@@ -168,33 +116,24 @@ class VehiclePage extends React.Component {
             ▶
           </button>
         </div>
-        {this.props.PageStore.VehicleStore.showRenameForm ? (
+        {this.props.VehicleStore.showRenameForm ? (
           <form
             className="rename__form"
             onSubmit={e => {
               e.preventDefault();
-              this.props.PageStore.VehicleService.onRename(
-                this.props.PageStore.VehicleService.vehicle
-              );
-              this.props.PageStore.VehicleStore.setShowRenameForm();
-              this.props.PageStore.VehicleService.setRenameVehicleModel("");
-              this.props.PageStore.VehicleService.setRenameVehicleYear("");
+              this.props.VehicleStore.onRenameMethod();
             }}
-            value={this.props.PageStore.VehicleStore.showRenameForm}
+            value={this.props.VehicleStore.showRenameForm}
           >
             <p>Input New Brand</p>
             <select
               className="rename__dropdown"
-              defaultValue={
-                this.props.PageStore.VehicleService.renameVehicleBrand
-              }
+              defaultValue={this.props.VehicleStore.renameVehicleBrand}
               onClick={e =>
-                this.props.PageStore.VehicleService.setRenameVehicleBrand(
-                  e.target.value
-                )
+                this.props.VehicleStore.setRenameVehicleBrand(e.target.value)
               }
             >
-              {this.props.PageStore.BrandService.brand.map(brand => (
+              {this.props.VehicleStore.getBrands(brand => (
                 <option value={brand.name}>{brand.name}</option>
               ))}
             </select>
@@ -202,54 +141,26 @@ class VehiclePage extends React.Component {
             <input
               className="rename__fields"
               type="text"
-              value={this.props.PageStore.VehicleService.renameVehicleModel}
+              value={this.props.VehicleStore.renameVehicleModel}
               onChange={e => {
-                this.props.PageStore.VehicleService.setRenameVehicleModel(
+                this.props.VehicleStore.renameVehicleModelMethod(
                   e.target.value
                 );
-                if (
-                  this.props.PageStore.VehicleService.renameVehicleModel &&
-                  this.props.PageStore.VehicleService.renameVehicleYear !== ""
-                ) {
-                  this.props.PageStore.VehicleStore.setRenameSubmitDisabled(
-                    false
-                  );
-                } else {
-                  this.props.PageStore.VehicleStore.setRenameSubmitDisabled(
-                    true
-                  );
-                }
               }}
             />
             <p>Input New Year</p>
             <input
               className="rename__fields"
               type="text"
-              value={this.props.PageStore.VehicleService.renameVehicleYear}
+              value={this.props.VehicleStore.renameVehicleYear}
               onChange={e => {
-                if (e.currentTarget.value.match("^[0-9]{1,4}$") != null) {
-                  this.props.PageStore.VehicleService.setRenameVehicleYear(
-                    e.target.value
-                  );
-                }
-                if (
-                  this.props.PageStore.VehicleService.renameVehicleModel &&
-                  this.props.PageStore.VehicleService.renameVehicleYear !== ""
-                ) {
-                  this.props.PageStore.VehicleStore.setRenameSubmitDisabled(
-                    false
-                  );
-                } else {
-                  this.props.PageStore.VehicleStore.setRenameSubmitDisabled(
-                    true
-                  );
-                }
+                this.props.VehicleStore.renameVehicleYearMethod(e.target.value);
               }}
             />
             <button
               className="rename__button"
               type="submit"
-              disabled={this.props.PageStore.VehicleStore.renameSubmitDisabled}
+              disabled={this.props.VehicleStore.renameSubmitDisabled}
             >
               Rename Vehicle
             </button>
@@ -259,33 +170,21 @@ class VehiclePage extends React.Component {
           className="vehicle__form--container"
           onSubmit={e => {
             e.preventDefault();
-            this.props.PageStore.VehicleService.addVehicle(
-              {
-                brand: this.props.PageStore.VehicleStore.formVehicleBrand,
-                model: this.props.PageStore.VehicleStore.formVehicleModel,
-                year: this.props.PageStore.VehicleStore.formVehicleYear,
-                id: this.props.PageStore.vehicleId
-              },
-              this.props.PageStore.VehicleStore.formVehicleBrand
-            );
-            this.props.PageStore.VehicleStore.setFormVehicleModel("");
-            this.props.PageStore.VehicleStore.setFormVehicleYear("");
+            this.props.VehicleStore.addVehicleMethod();
           }}
         >
           <div>
             <select
               className="vehicle__dropdown"
-              defaultValue={this.props.PageStore.VehicleStore.formVehicleBrand}
+              defaultValue={this.props.VehicleStore.formVehicleBrand}
               onClick={e =>
-                this.props.PageStore.VehicleStore.setFormVehicleBrand(
-                  e.target.value
-                )
+                this.props.VehicleStore.setFormVehicleBrand(e.target.value)
               }
             >
               <option selected hidden>
                 Select Brand
               </option>
-              {this.props.PageStore.BrandService.brand.map(brand => (
+              {this.props.VehicleStore.getBrands(brand => (
                 <option value={brand.name}>{brand.name}</option>
               ))}
             </select>
@@ -293,44 +192,18 @@ class VehiclePage extends React.Component {
               className="vehicle__input"
               type="text"
               placeholder="Vehicle Model"
-              value={this.props.PageStore.VehicleStore.formVehicleModel}
+              value={this.props.VehicleStore.formVehicleModel}
               onChange={e => {
-                this.props.PageStore.VehicleStore.setFormVehicleModel(
-                  e.target.value
-                );
-                if (
-                  this.props.PageStore.VehicleStore.formVehicleModel &&
-                  this.props.PageStore.VehicleStore.formVehicleYear !== ""
-                ) {
-                  this.props.PageStore.VehicleStore.setFormSubmitDisabled(
-                    false
-                  );
-                } else {
-                  this.props.PageStore.VehicleStore.setFormSubmitDisabled(true);
-                }
+                this.props.VehicleStore.formVehicleModelMethod(e.target.value);
               }}
             />
             <input
               className="vehicle__input"
               type="text"
               placeholder="Vehicle Year"
-              value={this.props.PageStore.VehicleStore.formVehicleYear}
+              value={this.props.VehicleStore.formVehicleYear}
               onChange={e => {
-                if (e.target.value.match("^[0-9]{1,4}$") != null) {
-                  this.props.PageStore.VehicleStore.setFormVehicleYear(
-                    e.target.value
-                  );
-                }
-                if (
-                  this.props.PageStore.VehicleStore.formVehicleModel &&
-                  this.props.PageStore.VehicleStore.formVehicleYear !== ""
-                ) {
-                  this.props.PageStore.VehicleStore.setFormSubmitDisabled(
-                    false
-                  );
-                } else {
-                  this.props.PageStore.VehicleStore.setFormSubmitDisabled(true);
-                }
+                this.props.VehicleStore.formVehicleYearMethod(e.target.value);
               }}
             />
           </div>
@@ -338,12 +211,12 @@ class VehiclePage extends React.Component {
           <button
             className="vehicle__btn--submit"
             type="submit"
-            disabled={this.props.PageStore.VehicleStore.formSubmitDisabled}
+            disabled={this.props.VehicleStore.formSubmitDisabled}
           >
             Add Vehicle
           </button>
         </form>
-        {this.props.PageStore.getBrandId()}
+        {this.props.VehicleStore.getParentId()}
       </div>
     );
   }
