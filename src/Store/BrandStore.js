@@ -70,7 +70,7 @@ class BrandStore {
   addBrand(e) {
     this.PageStore.BrandService.brand.push(e);
   }
-  @action onDelete(id) {
+  @action.bound onDelete(id) {
     const brand = this.PageStore.BrandService.brand.findIndex(
       item => item.id === id
     );
@@ -82,8 +82,8 @@ class BrandStore {
       item => item.parentId === id
     );
     this.PageStore.VehicleService.vehicle.splice(vehicle, vehicleNum);
-    this.sortBrand = true;
-    this.sortBrand = false;
+    this.sortBrand = !this.sortBrand;
+    this.sortBrand = !this.sortBrand;
   }
   @action.bound
   onRename() {
@@ -146,7 +146,7 @@ class BrandStore {
       .map(e);
   }
   @action.bound
-  RenameButtonMethod(e) {
+  renameButtonMethod(e) {
     this.setRenameId(e);
     this.setShowRenameForm();
     this.setPlaceholderBrand();
@@ -156,13 +156,15 @@ class BrandStore {
     this.setRowsPerPage(e);
     this.setStartIndex();
     this.setEndIndex();
+    this.sortBrand = true;
+    this.sortBrand = false;
   }
-  @action nextPageMethod() {
+  @action.bound nextPageMethod() {
     this.setNextPage();
     this.setStartIndex();
     this.setEndIndex();
   }
-  @action previousPageMethod() {
+  @action.bound previousPageMethod() {
     this.setPreviousPage();
     this.setStartIndex();
     this.setEndIndex();

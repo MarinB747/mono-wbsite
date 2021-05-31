@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import { Edit, Delete } from "@material-ui/icons";
+import { Table } from "../Components/Table";
 import "./Pages.css";
 
 @inject("VehicleStore")
@@ -43,129 +43,33 @@ class VehiclePage extends React.Component {
             Year{this.props.VehicleStore.sortYear ? <text>▼</text> : null}
           </button>
         </div>
-        <table className="vehicle__list">
-          <tb>
-            {this.props.VehicleStore.getVehicles(vehicle => (
-              <tr key={vehicle.id}>
-                <td className="vehicle__list--wrapper">
-                  <li className="vehicle__column">{vehicle.name}</li>
-                </td>
-                <td className="vehicle__list--wrapper">
-                  <li className="vehicle__column">{vehicle.model}</li>
-                </td>
-                <td className="vehicle__list--wrapper">
-                  <li className="vehicle__column">{vehicle.year}</li>
-                </td>
-                <td className="vehicle__list--wrapper">
-                  <button
-                    className="vehicle__column--button"
-                    value={vehicle.id}
-                    onClick={() => {
-                      this.props.VehicleStore.onDelete(vehicle.id);
-                    }}
-                  >
-                    <Delete />
-                  </button>
-                </td>
-                <td className="vehicle__list--wrapper">
-                  <button
-                    className="vehicle__column--button"
-                    value={vehicle.id}
-                    onClick={() => {
-                      this.props.VehicleStore.renameFormMethod(vehicle.id);
-                    }}
-                  >
-                    <Edit />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tb>
-        </table>
-        <div className="pagination__wrapper">
-          <select
-            onChange={e => {
-              this.props.VehicleStore.pagingMethod(e.target.value);
-            }}
-          >
-            {this.props.VehicleStore.pageCount.map(item => (
-              <option value={item.pages}>{item.pages}</option>
-            ))}
-          </select>
-          <button
-            onClick={() => {
-              this.props.VehicleStore.previousPageMethod();
-            }}
-            className={`prev ${
-              this.props.VehicleStore.currentPage === 1 ? "disabled" : ""
-            }`}
-          >
-            ◀
-          </button>
-          <button
-            onClick={() => {
-              this.props.VehicleStore.nextPageMethod();
-            }}
-            className={`next ${
-              this.props.VehicleStore.currentPage ===
-              this.props.VehicleStore.vehicleLastPage
-                ? "disabled"
-                : ""
-            }`}
-          >
-            ▶
-          </button>
-        </div>
-        {this.props.VehicleStore.showRenameForm ? (
-          <form
-            className="rename__form"
-            onSubmit={e => {
-              e.preventDefault();
-              this.props.VehicleStore.onRenameMethod();
-            }}
-            value={this.props.VehicleStore.showRenameForm}
-          >
-            <p>Input New Brand</p>
-            <select
-              className="rename__dropdown"
-              defaultValue={this.props.VehicleStore.renameVehicleBrand}
-              onClick={e =>
-                this.props.VehicleStore.setRenameVehicleBrand(e.target.value)
-              }
-            >
-              {this.props.VehicleStore.getBrands(brand => (
-                <option value={brand.name}>{brand.name}</option>
-              ))}
-            </select>
-            <p>Input New Model</p>
-            <input
-              className="rename__fields"
-              type="text"
-              value={this.props.VehicleStore.renameVehicleModel}
-              onChange={e => {
-                this.props.VehicleStore.renameVehicleModelMethod(
-                  e.target.value
-                );
-              }}
-            />
-            <p>Input New Year</p>
-            <input
-              className="rename__fields"
-              type="text"
-              value={this.props.VehicleStore.renameVehicleYear}
-              onChange={e => {
-                this.props.VehicleStore.renameVehicleYearMethod(e.target.value);
-              }}
-            />
-            <button
-              className="rename__button"
-              type="submit"
-              disabled={this.props.VehicleStore.renameSubmitDisabled}
-            >
-              Rename Vehicle
-            </button>
-          </form>
-        ) : null}
+        <Table
+          getData={this.props.VehicleStore.getVehicles}
+          deleteFn={this.props.VehicleStore.onDelete}
+          renameFn={this.props.VehicleStore.renameFormMethod}
+          pagingFn={this.props.VehicleStore.pagingMethod}
+          pages={this.props.VehicleStore.pageCount}
+          thisPage={this.props.VehicleStore.currentPage}
+          lastPage={this.props.VehicleStore.vehicleLastPage}
+          prevPageFn={this.props.VehicleStore.previousPageMethod}
+          nextPageFn={this.props.VehicleStore.nextPageMethod}
+          renameMethod={this.props.VehicleStore.onRenameMethod}
+          renameForm={this.props.VehicleStore.showRenameForm}
+          firstSelectValue={this.props.VehicleStore.renameVehicleBrand}
+          firstSelectMethod={this.props.VehicleStore.setRenameVehicleBrand}
+          selectRenameData={this.props.VehicleStore.getBrands}
+          firstRenameValue={this.props.VehicleStore.renameVehicleModel}
+          firstRenameMethod={this.props.VehicleStore.renameVehicleModelMethod}
+          secondRenameValue={this.props.VehicleStore.renameVehicleYear}
+          secondRenameMethod={this.props.VehicleStore.renameVehicleYearMethod}
+          renameSubmit={this.props.VehicleStore.renameSubmitDisabled}
+          dataName="Vehicle"
+          secondRenameInput="Year"
+          firstRenameInput="Model"
+          firstRenameSelect="Brand"
+          tableStyle="vehicle__list"
+          paginationWrapperStyle="pagination__wrapper--vehicle"
+        />
         <form
           className="vehicle__form--container"
           onSubmit={e => {

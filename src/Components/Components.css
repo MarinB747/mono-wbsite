@@ -47,3 +47,45 @@
   text-decoration: none;
   color: black;
 }
+/*  Talbe Styles  */
+.table__list--wrapper {
+  list-style-type: none;
+  padding: 0;
+}
+
+.table__column {
+  border-style: double;
+  width: 6.5rem;
+  text-align: center;
+}
+.table__column--button {
+  width: 1.5rem;
+  text-align: center;
+  height: 1.5rem;
+  background: khaki;
+  border-style: none;
+}
+.rename__form {
+  border-style: double;
+  width: 10rem;
+  position: relative;
+  right: 2%;
+  text-align: center;
+}
+.rename__form--text {
+  position: relative;
+  left: 29%;
+}
+
+.rename__field {
+  width: 6rem;
+  margin-top: 5px;
+}
+
+.rename__button {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
+  width: 52%;
+}

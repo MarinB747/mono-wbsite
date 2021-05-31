@@ -105,10 +105,10 @@ class VehicleStore {
       item => item.id === id
     );
     this.PageStore.VehicleService.vehicle.splice(vehicle, 1);
-    this.sortBrand = true;
-    this.sortBrand = false;
+    this.sortBrand = !this.sortBrand;
+    this.sortBrand = !this.sortBrand;
   }
-  @action
+  @action.bound
   onRename() {
     const objId = this.PageStore.VehicleService.vehicle.findIndex(
       obj => obj.id === this.renameId
@@ -135,35 +135,35 @@ class VehicleStore {
       this.PageStore.VehicleService.vehicle.splice(nextId, 0, objRename);
     }
   }
-  @action setRenameId(e) {
+  @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
-  @action setPlaceholderBrand() {
+  @action.bound setPlaceholderBrand() {
     let placeholderName = this.PageStore.VehicleService.vehicle.find(
       obj => obj.id === this.renameId
     );
     this.renameVehicleBrand = placeholderName.name;
   }
-  @action setPlaceholderModel() {
+  @action.bound setPlaceholderModel() {
     let placeholderName = this.PageStore.VehicleService.vehicle.find(
       obj => obj.id === this.renameId
     );
     console.log(placeholderName);
     this.renameVehicleModel = placeholderName.model;
   }
-  @action setPlaceholderYear() {
+  @action.bound setPlaceholderYear() {
     let placeholderName = this.PageStore.VehicleService.vehicle.find(
       obj => obj.id === this.renameId
     );
     this.renameVehicleYear = placeholderName.year;
   }
-  @action setRenameVehicleBrand(e) {
+  @action.bound setRenameVehicleBrand(e) {
     this.renameVehicleBrand = e;
   }
-  @action setRenameVehicleModel(e) {
+  @action.bound setRenameVehicleModel(e) {
     this.renameVehicleModel = e;
   }
-  @action setRenameVehicleYear(e) {
+  @action.bound setRenameVehicleYear(e) {
     this.renameVehicleYear = e;
   }
   @action.bound

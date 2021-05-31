@@ -77,17 +77,6 @@
   background-color: khaki;
 }
 
-.vehicle__list--wrapper {
-  list-style-type: none;
-  padding: 0;
-}
-
-.vehicle__column {
-  border-style: double;
-  width: 6.5rem;
-  text-align: center;
-}
-
 /*  VEHICLEFORM STYLES  */
 .vehicle__form--container {
   margin-top: 20px;
@@ -105,7 +94,7 @@
   margin-right: 5px;
   left: 23%;
 }
-.pagination__wrapper {
+.pagination__wrapper--vehicle {
   position: relative;
   left: 27%;
   margin-bottom: 10px;
@@ -126,38 +115,7 @@
   box-shadow: none;
   size: 0px;
 }
-.vehicle__column--button {
-  width: 1.5rem;
-  text-align: center;
-  height: 1.5rem;
-  background: khaki;
-  border-style: none;
-}
 
-.rename__form {
-  border-style: double;
-}
-
-.rename__form > p {
-  position: relative;
-  left: 29%;
-}
-.rename__dropdown {
-  position: relative;
-  left: 31%;
-}
-.rename__fields {
-  position: relative;
-  left: 18%;
-}
-.rename__button {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  position: relative;
-  width: 52%;
-  left: 21%;
-}
 /* BRANDLIST STYLES */
 .brand__list--header {
   display: flex;
@@ -200,18 +158,6 @@
   margin-bottom: 10px;
 }
 
-.rename__form--brand {
-  border-style: double;
-  width: 10rem;
-  position: relative;
-  right: 2%;
-  text-align: center;
-}
-
-.rename__field--brand {
-  width: 6rem;
-  margin-top: 5px;
-}
 .brand__input {
   width: 6.5rem;
   position: relative;
@@ -226,13 +172,7 @@
   left: 25%;
   margin-bottom: 10px;
 }
-.rename__button--brand {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  position: relative;
-  width: 52%;
-}
+
 .brand__dropdown--header {
   position: relative;
   right: 3%;
