@@ -89,7 +89,7 @@ class VehiclePage extends React.Component {
                 Select Brand
               </option>
               {this.props.VehicleStore.getBrands(brand => (
-                <option value={brand.name}>{brand.name}</option>
+                <option value={brand.id}>{brand.name}</option>
               ))}
             </select>
             <input

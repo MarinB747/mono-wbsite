@@ -13,12 +13,13 @@ class VehicleStore {
   @observable showRenameForm = false;
   @observable startIndex = 0;
   @observable endIndex = 5;
-  @observable renameSubmitDisabled = true;
+  @observable renameSubmitDisabled = false;
   @observable formVehicleBrand = "";
   @observable formVehicleModel = "";
   @observable formVehicleYear = "";
   @observable formSubmitDisabled = true;
   @observable renameVehicleBrand = "";
+  @observable renameVehicleParentId = "";
   @observable renameVehicleModel = "";
   @observable renameVehicleYear = "";
   @observable renameId = "";
@@ -42,15 +43,15 @@ class VehicleStore {
     this.showRenameForm = !this.showRenameForm;
   }
   @action sortByBrand() {
-    this.PageStore.VehicleService.vehicle.sort((b, a) =>
-      a.name < b.name ? 1 : a.name > b.name ? -1 : 0
+    this.PageStore.VehicleService.getVehicles().sort((b, a) =>
+      a.brand < b.brand ? 1 : a.brand > b.brand ? -1 : 0
     );
     this.sortBrand = true;
     this.sortModel = false;
     this.sortYear = false;
   }
   @action sortByModel() {
-    this.PageStore.VehicleService.vehicle.sort((b, a) =>
+    this.PageStore.VehicleService.getVehicles().sort((b, a) =>
       a.model < b.model ? 1 : a.model > b.model ? -1 : 0
     );
     this.sortBrand = false;
@@ -58,7 +59,7 @@ class VehicleStore {
     this.sortYear = false;
   }
   @action sortByYear() {
-    this.PageStore.VehicleService.vehicle.sort((b, a) =>
+    this.PageStore.VehicleService.getVehicles().sort((b, a) =>
       a.year < b.year ? 1 : a.year > b.year ? -1 : 0
     );
     this.sortBrand = false;
@@ -75,7 +76,7 @@ class VehicleStore {
     this.renameSubmitDisabled = e;
   }
   @action setFormVehicleBrand(e) {
-    this.formVehicleBrand = e;
+    this.formVehicleBrand = parseInt(e);
   }
   @action setFormVehicleModel(e) {
     this.formVehicleModel = e;
@@ -83,82 +84,43 @@ class VehicleStore {
   @action setFormVehicleYear(e) {
     this.formVehicleYear = e;
   }
+  @action setrenameVehicleParentId(e) {
+    this.renameVehicleParentId = parseInt(e);
+  }
   @action setFormSubmitDisabled(e) {
     this.formSubmitDisabled = e;
-  }
-  @action.bound
-  addVehicle(e) {
-    let nextId = parseInt(
-      this.PageStore.VehicleService.vehicle
-        .map(x => x.name)
-        .lastIndexOf(this.formVehicleBrand) + 1
-    );
-    if (nextId === 0) {
-      nextId = this.PageStore.VehicleService.vehicle.length;
-    }
-    this.PageStore.VehicleService.vehicle.splice(nextId, 0, e);
   }
 
   @action.bound
   onDelete(id) {
-    const vehicle = this.PageStore.VehicleService.vehicle.findIndex(
-      item => item.id === id
-    );
-    this.PageStore.VehicleService.vehicle.splice(vehicle, 1);
+    this.PageStore.VehicleService.deleteVehicles(id);
     this.sortBrand = !this.sortBrand;
     this.sortBrand = !this.sortBrand;
-  }
-  @action.bound
-  onRename() {
-    const objId = this.PageStore.VehicleService.vehicle.findIndex(
-      obj => obj.id === this.renameId
-    );
-    const objRename = this.PageStore.VehicleService.vehicle[objId];
-    if (objRename.name === this.renameVehicleBrand) {
-      objRename.name = this.renameVehicleBrand;
-      objRename.model = this.renameVehicleModel;
-      objRename.year = this.renameVehicleYear;
-    } else {
-      objRename.name = this.renameVehicleBrand;
-      objRename.model = this.renameVehicleModel;
-      objRename.year = this.renameVehicleYear;
-
-      this.PageStore.VehicleService.vehicle.splice(objId, 1);
-      let nextId = parseInt(
-        this.PageStore.VehicleService.vehicle
-          .map(x => x.name)
-          .lastIndexOf(this.renameVehicleBrand) + 1
-      );
-      if (nextId === 0) {
-        nextId = this.vehicle.length;
-      }
-      this.PageStore.VehicleService.vehicle.splice(nextId, 0, objRename);
-    }
   }
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
   @action.bound setPlaceholderBrand() {
-    let placeholderName = this.PageStore.VehicleService.vehicle.find(
+    let placeholderName = this.PageStore.VehicleService.getVehicles().find(
       obj => obj.id === this.renameId
     );
-    this.renameVehicleBrand = placeholderName.name;
+    this.renameVehicleBrand = placeholderName.brand;
   }
   @action.bound setPlaceholderModel() {
-    let placeholderName = this.PageStore.VehicleService.vehicle.find(
+    let placeholderName = this.PageStore.VehicleService.getVehicles().find(
       obj => obj.id === this.renameId
     );
     console.log(placeholderName);
     this.renameVehicleModel = placeholderName.model;
   }
   @action.bound setPlaceholderYear() {
-    let placeholderName = this.PageStore.VehicleService.vehicle.find(
+    let placeholderName = this.PageStore.VehicleService.getVehicles().find(
       obj => obj.id === this.renameId
     );
     this.renameVehicleYear = placeholderName.year;
   }
   @action.bound setRenameVehicleBrand(e) {
-    this.renameVehicleBrand = e;
+    this.renameVehicleBrand = parseInt(e);
   }
   @action.bound setRenameVehicleModel(e) {
     this.renameVehicleModel = e;
@@ -168,16 +130,16 @@ class VehicleStore {
   }
   @action.bound
   getParentId() {
-    this.PageStore.VehicleService.vehicle.forEach(obj => {
-      const targetBrand = this.PageStore.BrandService.brand.find(
-        e => e.name === obj.name
+    this.PageStore.VehicleService.getVehicles().forEach(obj => {
+      const targetBrand = this.PageStore.BrandService.getBrands().find(
+        e => e.id === obj.parentId
       );
-      obj.parentId = targetBrand.id;
+      obj.brand = targetBrand.name;
     });
   }
   @computed get vehicleLastPage() {
     return Math.ceil(
-      this.PageStore.VehicleService.vehicle.length / this.rowsPerPage
+      this.PageStore.VehicleService.getVehicles().length / this.rowsPerPage
     );
   }
 
@@ -185,7 +147,7 @@ class VehicleStore {
     return (
       Math.max.apply(
         null,
-        this.PageStore.VehicleService.vehicle.map(obj => obj.id)
+        this.PageStore.VehicleService.getVehicles().map(obj => obj.id)
       ) + 1
     );
   }
@@ -196,7 +158,7 @@ class VehicleStore {
   }
   @action.bound
   getVehicles(e) {
-    let vehicles = this.PageStore.VehicleService.vehicle;
+    let vehicles = this.PageStore.VehicleService.getVehicles();
     return vehicles
       .filter(item => {
         if (this.filterBrand !== 0) {
@@ -236,7 +198,11 @@ class VehicleStore {
   }
   @action.bound
   onRenameMethod() {
-    this.onRename();
+    this.PageStore.VehicleService.renameVehicles(this.renameId, {
+      parentId: this.renameVehicleBrand,
+      model: this.renameVehicleModel,
+      year: this.renameVehicleYear
+    });
     this.setShowRenameForm();
     this.setRenameVehicleModel("");
     this.setRenameVehicleYear("");
@@ -263,12 +229,13 @@ class VehicleStore {
   }
   @action.bound
   addVehicleMethod() {
-    this.addVehicle({
-      name: this.formVehicleBrand,
+    this.PageStore.VehicleService.addVehicles({
+      parentId: this.formVehicleBrand,
       model: this.formVehicleModel,
       year: this.formVehicleYear,
       id: this.vehicleId
     });
+
     this.setFormVehicleModel("");
     this.setFormVehicleYear("");
   }

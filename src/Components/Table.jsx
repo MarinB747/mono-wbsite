@@ -11,7 +11,7 @@ class Table extends React.Component {
             {this.props.getData(data => (
               <tr key={data.id}>
                 <td className="table__list--wrapper">
-                  <li className="table__column">{data.name}</li>
+                  <li className="table__column">{data.name || data.brand}</li>
                 </td>
                 {data.model ? (
                   <td className="table__list--wrapper">
@@ -96,7 +96,7 @@ class Table extends React.Component {
                   onClick={e => this.props.firstSelectMethod(e.target.value)}
                 >
                   {this.props.selectRenameData(data => (
-                    <option value={data.name}>{data.name}</option>
+                    <option value={data.id}>{data.name}</option>
                   ))}
                 </select>
               </>
