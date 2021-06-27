@@ -2,7 +2,6 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Table } from "../Components/Table";
 import "./Pages.css";
-
 @inject("VehicleStore")
 @observer
 class VehiclePage extends React.Component {
@@ -69,7 +68,11 @@ class VehiclePage extends React.Component {
           firstRenameSelect="Brand"
           tableStyle="vehicle__list"
           paginationWrapperStyle="pagination__wrapper--vehicle"
+          showModal={this.props.VehicleStore.showModal}
+          hideModalMethod={this.props.VehicleStore.setShowModal}
+          showModalMethod={this.props.VehicleStore.showModalMethod}
         />
+
         <form
           className="vehicle__form--container"
           onSubmit={e => {

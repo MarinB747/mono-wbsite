@@ -1,8 +1,12 @@
 import { observable, action, computed, makeObservable } from "mobx";
 class BrandStore {
   PageStore;
+  VehicleService;
+  BrandService;
   constructor(PageStore) {
     this.PageStore = PageStore;
+    this.VehicleService = PageStore.VehicleService;
+    this.BrandService = PageStore.BrandService;
     makeObservable(this);
   }
   @observable rowsPerPage = 5;
@@ -18,6 +22,11 @@ class BrandStore {
   @observable renameBrand = "";
   @observable renameId = "";
   @observable sortBrand = false;
+  @observable showModal = false;
+
+  @action.bound setShowModal() {
+    this.showModal = !this.showModal;
+  }
   @action.bound setRowsPerPage(e) {
     this.rowsPerPage = parseInt(e);
   }
@@ -37,7 +46,7 @@ class BrandStore {
     this.filterBrand = e;
   }
   @action.bound sortByBrand() {
-    this.PageStore.BrandService.getBrands().sort((b, a) =>
+    this.BrandService.getBrands().sort((b, a) =>
       a.name < b.name ? 1 : a.name > b.name ? -1 : 0
     );
     this.sortBrand = true;
@@ -57,16 +66,15 @@ class BrandStore {
   }
 
   @computed get brandLastPage() {
-    return Math.ceil(
-      this.PageStore.BrandService.getBrands().length / this.rowsPerPage
-    );
+    return Math.ceil(this.BrandService.getBrands().length / this.rowsPerPage);
   }
 
-  @action.bound onDelete(id) {
-    this.PageStore.BrandService.deleteBrands(
-      id,
-      this.PageStore.VehicleService.getVehicles()
+  @action.bound onDelete() {
+    this.BrandService.deleteBrands(
+      this.renameId,
+      this.VehicleService.getVehicles()
     );
+    this.setShowModal();
     this.sortBrand = !this.sortBrand;
     this.sortBrand = !this.sortBrand;
   }
@@ -78,7 +86,7 @@ class BrandStore {
     this.renameId = parseInt(e);
   }
   @action.bound setPlaceholderBrand() {
-    let placeholderName = this.PageStore.BrandService.getBrands().find(
+    let placeholderName = this.BrandService.getBrands().find(
       obj => obj.id === this.renameId
     );
     this.renameBrand = placeholderName.name;
@@ -87,40 +95,47 @@ class BrandStore {
     return (
       Math.max.apply(
         null,
-        this.PageStore.BrandService.getBrands().map(obj => obj.id)
+        this.BrandService.getBrands().map(obj => obj.id)
       ) + 1
     );
   }
   @action.bound
   getParentId() {
-    this.PageStore.VehicleService.vehicle.forEach(obj => {
-      const targetBrand = this.PageStore.BrandService.getBrands().find(
+    this.VehicleService.vehicle.forEach(obj => {
+      const targetBrand = this.BrandService.getBrands().find(
         e => e.id === obj.parentId
       );
       obj.brand = targetBrand.name;
     });
   }
+
   @action.bound
   renameMethod() {
-    this.PageStore.BrandService.renameBrands(this.renameId, this.renameBrand);
+    this.BrandService.renameBrands(this.renameId, this.renameBrand);
     this.setRenameSubmitDisabled(true);
     this.setShowRenameForm();
     this.setRenameBrand("");
   }
   @action.bound
   mapBrands(e) {
-    let brands = this.PageStore.BrandService.getBrands();
+    let brands = this.BrandService.getBrands();
     return brands.map(e);
   }
   @action.bound
   getBrands(e) {
-    let brands = this.PageStore.BrandService.getBrands();
+    let brands = this.BrandService.getBrands();
     return brands
       .filter(item => {
         if (item.name.indexOf(this.filterBrand) > -1) return true;
       })
       .slice(this.startIndex, this.endIndex)
       .map(e);
+  }
+  @action.bound
+  showModalMethod(e) {
+    this.setRenameId(e);
+    this.setShowModal();
+    this.setPlaceholderBrand();
   }
   @action.bound
   renameButtonMethod(e) {
@@ -157,7 +172,7 @@ class BrandStore {
   }
   @action.bound
   addBrandMethod() {
-    this.PageStore.BrandService.addBrands({
+    this.BrandService.addBrands({
       name: this.vehicleBrand,
       id: this.brandId
     });

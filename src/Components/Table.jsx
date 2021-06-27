@@ -28,7 +28,7 @@ class Table extends React.Component {
                     className="table__column--button"
                     value={data.id}
                     onClick={() => {
-                      this.props.deleteFn(data.id);
+                      this.props.showModalMethod(data.id);
                     }}
                   >
                     <Delete />
@@ -78,6 +78,28 @@ class Table extends React.Component {
             ▶
           </button>
         </div>
+        {this.props.showModal ? (
+          <div className="modal__container">
+            Are you sure you want to delete {this.props.firstSelectValue}{" "}
+            {this.props.firstRenameValue} {this.props.secondRenameValue} ?
+            <div className="modal__btn--wrapper">
+              <button
+                onClick={() => {
+                  this.props.deleteFn();
+                }}
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => {
+                  this.props.hideModalMethod();
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : null}
         {this.props.renameForm ? (
           <form
             className="rename__form"

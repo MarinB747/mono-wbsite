@@ -89,3 +89,16 @@
   position: relative;
   width: 52%;
 }
+
+.modal__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 10rem;
+  height: 5rem;
+  text-align: center;
+  margin-right: 4%;
+  border-style: double;
+  background-color: khaki;
+}

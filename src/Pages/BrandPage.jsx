@@ -43,6 +43,9 @@ class BrandPage extends React.Component {
           dataName="Brand"
           tableStyle="brand__list"
           paginationWrapperStyle="pagination__wrapper--brand"
+          showModal={this.props.BrandStore.showModal}
+          hideModalMethod={this.props.BrandStore.setShowModal}
+          showModalMethod={this.props.BrandStore.showModalMethod}
         />
 
         <form
