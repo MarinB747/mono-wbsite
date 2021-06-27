@@ -1,37 +1,20 @@
+import DB from "../db.json";
 class BrandService {
-  brand = [
-    {
-      id: 1,
-      name: "BMW"
-    },
-    {
-      id: 2,
-      name: "Audi"
-    },
-    {
-      id: 3,
-      name: "Volkswagen"
-    },
-    {
-      id: 4,
-      name: "Ford"
-    }
-  ];
   getBrands() {
-    return this.brand;
+    return DB.brand;
   }
   addBrands(e) {
-    this.brand.push(e);
+    DB.brand.push(e);
   }
 
   renameBrands(id, name) {
-    const objId = this.brand.findIndex(obj => obj.id === id);
-    const objRename = this.brand[objId];
+    const objId = DB.brand.findIndex(obj => obj.id === id);
+    const objRename = DB.brand[objId];
     objRename.name = name;
   }
   deleteBrands(id, vehicles) {
-    const item = this.brand.findIndex(item => item.id === id);
-    this.brand.splice(item, 1);
+    const item = DB.brand.findIndex(item => item.id === id);
+    DB.brand.splice(item, 1);
     const vehicleNum = vehicles.filter(item => item.parentId === id).length;
     const vehicle = vehicles.findIndex(item => item.parentId === id);
     vehicles.splice(vehicle, vehicleNum);

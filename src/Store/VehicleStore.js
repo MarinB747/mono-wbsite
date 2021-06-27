@@ -1,3 +1,5 @@
+import DB from "../db.json";
+
 import { observable, action, computed, makeObservable } from "mobx";
 class VehicleStore {
   PageStore;
@@ -160,7 +162,7 @@ class VehicleStore {
   }
   @action.bound
   getBrands(e) {
-    let brands = this.PageStore.BrandService.brand;
+    let brands = DB.brand;
     return brands.map(e);
   }
   @action.bound

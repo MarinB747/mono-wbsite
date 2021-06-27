@@ -1,3 +1,4 @@
+import DB from "../db.json";
 import { observable, action, computed, makeObservable } from "mobx";
 class BrandStore {
   PageStore;
@@ -101,7 +102,7 @@ class BrandStore {
   }
   @action.bound
   getParentId() {
-    this.VehicleService.vehicle.forEach(obj => {
+    DB.vehicle.forEach(obj => {
       const targetBrand = this.BrandService.getBrands().find(
         e => e.id === obj.parentId
       );
