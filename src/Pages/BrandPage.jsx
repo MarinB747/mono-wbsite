@@ -6,6 +6,10 @@ import "./Pages.css";
 @inject("BrandStore")
 @observer
 class BrandPage extends React.Component {
+  componentDidMount = () => {
+    this.props.BrandStore.getBrandList();
+    this.props.BrandStore.getParentId();
+  };
   render() {
     return (
       <div className="brand__table">
@@ -72,7 +76,6 @@ class BrandPage extends React.Component {
             Add Brand
           </button>
         </form>
-        {this.props.BrandStore.getParentId()}
       </div>
     );
   }

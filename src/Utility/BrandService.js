@@ -1,20 +1,23 @@
-import DB from "../db.json";
+import axios from "axios";
 class BrandService {
   getBrands() {
-    return DB.brand;
+    return axios.get(`http://localhost:3000/brand`);
   }
   addBrands(e) {
-    DB.brand.push(e);
+    axios.post(`http://localhost:3000/brand`, e).then(res => {
+      console.log(res);
+      console.log(res.data);
+    });
   }
 
   renameBrands(id, name) {
-    const objId = DB.brand.findIndex(obj => obj.id === id);
-    const objRename = DB.brand[objId];
-    objRename.name = name;
+    axios.put(`http://localhost:3000/brand/${id}`, { id: id, name: name });
   }
   deleteBrands(id, vehicles) {
-    const item = DB.brand.findIndex(item => item.id === id);
-    DB.brand.splice(item, 1);
+    axios.delete(`http://localhost:3000/brand/${id}`).then(res => {
+      console.log(res);
+      console.log(res.data);
+    });
     const vehicleNum = vehicles.filter(item => item.parentId === id).length;
     const vehicle = vehicles.findIndex(item => item.parentId === id);
     vehicles.splice(vehicle, vehicleNum);

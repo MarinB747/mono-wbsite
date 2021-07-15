@@ -1,4 +1,4 @@
-import Home from "./Pages/Home.jsx";
+import { Home } from "./Pages/Home.jsx";
 import { VehiclePage } from "./Pages/VehiclePage";
 import About from "./Pages/About.jsx";
 import "./App.css";
@@ -14,6 +14,7 @@ function App() {
       PageStore={pageStore}
       VehicleStore={pageStore.VehicleStore}
       BrandStore={pageStore.BrandStore}
+      RouterStore={pageStore.RouterStore}
     >
       <div className="app">
         <Router>

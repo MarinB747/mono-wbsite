@@ -1,9 +1,20 @@
+import React from "react";
 import "./Pages.css";
-
-export default function Home() {
-  return (
-    <div className="page">
-      <h1 className="home__title">WELCOME</h1>
-    </div>
-  );
+import { inject } from "mobx-react";
+import "./Pages.css";
+@inject("PageStore")
+class Home extends React.Component {
+  componentDidMount = () => {
+    this.props.PageStore.BrandStore.getBrandList();
+    this.props.PageStore.VehicleStore.getBrandList();
+  };
+  render() {
+    return (
+      <div className="page">
+        <h1 className="home__title">WELCOME</h1>
+      </div>
+    );
+  }
 }
+
+export { Home };

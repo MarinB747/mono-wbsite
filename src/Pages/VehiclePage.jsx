@@ -5,6 +5,10 @@ import "./Pages.css";
 @inject("VehicleStore")
 @observer
 class VehiclePage extends React.Component {
+  componentDidMount = () => {
+    this.props.VehicleStore.getBrandList();
+    this.props.VehicleStore.getParentId();
+  };
   render() {
     return (
       <div className="vehicle__table">
@@ -123,7 +127,6 @@ class VehiclePage extends React.Component {
             Add Vehicle
           </button>
         </form>
-        {this.props.VehicleStore.getParentId()}
       </div>
     );
   }

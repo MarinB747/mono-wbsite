@@ -1,8 +1,9 @@
 import "./Pages.css";
-
+import Navbar from "../Components/Navbar";
 export default function About() {
   return (
     <div className="page">
+      <Navbar />
       <h1 className="about__title">ABOUT US</h1>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

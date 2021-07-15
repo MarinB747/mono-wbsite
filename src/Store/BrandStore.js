@@ -24,7 +24,18 @@ class BrandStore {
   @observable renameId = "";
   @observable sortBrand = false;
   @observable showModal = false;
+  @observable brandList = [];
 
+  @action.bound setBrandList(e) {
+    this.brandList = e;
+  }
+  @action.bound
+  getBrandList() {
+    this.BrandService.getBrands().then(res => {
+      this.setBrandList(res.data);
+      return res.data;
+    });
+  }
   @action.bound setShowModal() {
     this.showModal = !this.showModal;
   }
@@ -47,7 +58,7 @@ class BrandStore {
     this.filterBrand = e;
   }
   @action.bound sortByBrand() {
-    this.BrandService.getBrands().sort((b, a) =>
+    this.brandList.sort((b, a) =>
       a.name < b.name ? 1 : a.name > b.name ? -1 : 0
     );
     this.sortBrand = true;
@@ -67,7 +78,7 @@ class BrandStore {
   }
 
   @computed get brandLastPage() {
-    return Math.ceil(this.BrandService.getBrands().length / this.rowsPerPage);
+    return Math.ceil(this.brandList.length / this.rowsPerPage);
   }
 
   @action.bound onDelete() {
@@ -87,25 +98,22 @@ class BrandStore {
     this.renameId = parseInt(e);
   }
   @action.bound setPlaceholderBrand() {
-    let placeholderName = this.BrandService.getBrands().find(
-      obj => obj.id === this.renameId
-    );
+    let placeholderName = this.brandList.find(obj => obj.id === this.renameId);
     this.renameBrand = placeholderName.name;
   }
   @computed get brandId() {
     return (
       Math.max.apply(
         null,
-        this.BrandService.getBrands().map(obj => obj.id)
+        this.brandList.map(obj => obj.id)
       ) + 1
     );
   }
   @action.bound
   getParentId() {
-    DB.vehicle.forEach(obj => {
-      const targetBrand = this.BrandService.getBrands().find(
-        e => e.id === obj.parentId
-      );
+    DB.vehicle.forEach(async obj => {
+      const targetBrand = await this.brandList.find(e => e.id === obj.parentId);
+      console.log(targetBrand);
       obj.brand = targetBrand.name;
     });
   }
@@ -119,12 +127,13 @@ class BrandStore {
   }
   @action.bound
   mapBrands(e) {
-    let brands = this.BrandService.getBrands();
+    let brands = this.brandList;
     return brands.map(e);
   }
   @action.bound
   getBrands(e) {
-    let brands = this.BrandService.getBrands();
+    const brands = this.brandList;
+    console.log(brands);
     return brands
       .filter(item => {
         if (item.name.indexOf(this.filterBrand) > -1) return true;

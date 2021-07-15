@@ -1,12 +1,13 @@
 import DB from "../db.json";
-
 import { observable, action, computed, makeObservable } from "mobx";
 class VehicleStore {
   PageStore;
   VehicleService;
+  BrandService;
   constructor(PageStore) {
     this.PageStore = PageStore;
     this.VehicleService = PageStore.VehicleService;
+    this.BrandService = PageStore.BrandService;
     makeObservable(this);
   }
   @observable rowsPerPage = 5;
@@ -31,6 +32,18 @@ class VehicleStore {
   @observable sortModel = false;
   @observable sortYear = false;
   @observable showModal = false;
+  @observable brandList = [];
+
+  @action.bound setBrandList(e) {
+    this.brandList = e;
+  }
+  @action.bound
+  getBrandList() {
+    this.BrandService.getBrands().then(res => {
+      this.setBrandList(res.data);
+      return res.data;
+    });
+  }
 
   @action.bound setShowModal() {
     this.showModal = !this.showModal;
@@ -139,10 +152,9 @@ class VehicleStore {
   }
   @action.bound
   getParentId() {
-    this.VehicleService.getVehicles().forEach(obj => {
-      const targetBrand = this.PageStore.BrandService.getBrands().find(
-        e => e.id === obj.parentId
-      );
+    this.VehicleService.getVehicles().forEach(async obj => {
+      const targetBrand = await this.brandList.find(e => e.id === obj.parentId);
+      console.log(targetBrand);
       obj.brand = targetBrand.name;
     });
   }
@@ -162,7 +174,7 @@ class VehicleStore {
   }
   @action.bound
   getBrands(e) {
-    let brands = DB.brand;
+    let brands = this.brandList;
     return brands.map(e);
   }
   @action.bound
