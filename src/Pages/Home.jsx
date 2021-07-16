@@ -3,7 +3,7 @@ import "./Pages.css";
 import { inject } from "mobx-react";
 import "./Pages.css";
 @inject("PageStore")
-class Home extends React.Component {
+class Home extends React.PureComponent {
   componentDidMount = () => {
     this.props.PageStore.BrandStore.getBrandList();
     this.props.PageStore.VehicleStore.getBrandList();

@@ -5,11 +5,12 @@ import "./Pages.css";
 
 @inject("BrandStore")
 @observer
-class BrandPage extends React.Component {
+class BrandPage extends React.PureComponent {
   componentDidMount = () => {
     this.props.BrandStore.getBrandList();
     this.props.BrandStore.getParentId();
   };
+
   render() {
     return (
       <div className="brand__table">
@@ -55,7 +56,6 @@ class BrandPage extends React.Component {
         <form
           className="vehicle__form--container"
           onSubmit={e => {
-            e.preventDefault();
             this.props.BrandStore.addBrandMethod();
           }}
         >

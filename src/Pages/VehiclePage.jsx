@@ -4,7 +4,7 @@ import { Table } from "../Components/Table";
 import "./Pages.css";
 @inject("VehicleStore")
 @observer
-class VehiclePage extends React.Component {
+class VehiclePage extends React.PureComponent {
   componentDidMount = () => {
     this.props.VehicleStore.getBrandList();
     this.props.VehicleStore.getParentId();

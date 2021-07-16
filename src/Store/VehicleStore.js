@@ -154,7 +154,6 @@ class VehicleStore {
   getParentId() {
     this.VehicleService.getVehicles().forEach(async obj => {
       const targetBrand = await this.brandList.find(e => e.id === obj.parentId);
-      console.log(targetBrand);
       obj.brand = targetBrand.name;
     });
   }

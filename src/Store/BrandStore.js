@@ -26,6 +26,10 @@ class BrandStore {
   @observable showModal = false;
   @observable brandList = [];
 
+  @action.bound
+  refreshPage() {
+    window.location.reload(true);
+  }
   @action.bound setBrandList(e) {
     this.brandList = e;
   }
@@ -89,6 +93,7 @@ class BrandStore {
     this.setShowModal();
     this.sortBrand = !this.sortBrand;
     this.sortBrand = !this.sortBrand;
+    this.refreshPage();
   }
 
   @action.bound setRenameBrand(e) {
@@ -110,11 +115,14 @@ class BrandStore {
     );
   }
   @action.bound
-  getParentId() {
-    DB.vehicle.forEach(async obj => {
-      const targetBrand = await this.brandList.find(e => e.id === obj.parentId);
-      console.log(targetBrand);
-      obj.brand = targetBrand.name;
+  async getParentId() {
+    return await DB.vehicle.forEach(obj => {
+      const targetBrand = this.brandList.find(e => e.id === obj.parentId);
+      if (targetBrand === undefined) {
+        return null;
+      } else {
+        obj.brand = targetBrand.name;
+      }
     });
   }
 
@@ -124,6 +132,7 @@ class BrandStore {
     this.setRenameSubmitDisabled(true);
     this.setShowRenameForm();
     this.setRenameBrand("");
+    this.refreshPage();
   }
   @action.bound
   mapBrands(e) {
@@ -133,7 +142,6 @@ class BrandStore {
   @action.bound
   getBrands(e) {
     const brands = this.brandList;
-    console.log(brands);
     return brands
       .filter(item => {
         if (item.name.indexOf(this.filterBrand) > -1) return true;
