@@ -7,7 +7,7 @@ import "./Pages.css";
 class VehiclePage extends React.PureComponent {
   componentDidMount = () => {
     this.props.VehicleStore.getBrandList();
-    this.props.VehicleStore.getParentId();
+    this.props.VehicleStore.getVehicleList();
   };
   render() {
     return (
@@ -127,6 +127,7 @@ class VehiclePage extends React.PureComponent {
             Add Vehicle
           </button>
         </form>
+        {this.props.VehicleStore.getParentId()}
       </div>
     );
   }

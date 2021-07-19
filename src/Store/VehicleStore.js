@@ -33,7 +33,22 @@ class VehicleStore {
   @observable sortYear = false;
   @observable showModal = false;
   @observable brandList = [];
+  @observable vehicleList = [];
 
+  @action.bound
+  refreshPage() {
+    window.location.reload(true);
+  }
+  @action.bound setVehicleList(e) {
+    this.vehicleList = e;
+  }
+  @action.bound
+  getVehicleList() {
+    this.VehicleService.getVehicles().then(res => {
+      this.setVehicleList(res.data);
+      return res.data;
+    });
+  }
   @action.bound setBrandList(e) {
     this.brandList = e;
   }
@@ -64,7 +79,7 @@ class VehicleStore {
     this.showRenameForm = !this.showRenameForm;
   }
   @action sortByBrand() {
-    this.VehicleService.getVehicles().sort((b, a) =>
+    this.vehicleList.sort((b, a) =>
       a.brand < b.brand ? 1 : a.brand > b.brand ? -1 : 0
     );
     this.sortBrand = true;
@@ -72,7 +87,7 @@ class VehicleStore {
     this.sortYear = false;
   }
   @action sortByModel() {
-    this.VehicleService.getVehicles().sort((b, a) =>
+    this.vehicleList.sort((b, a) =>
       a.model < b.model ? 1 : a.model > b.model ? -1 : 0
     );
     this.sortBrand = false;
@@ -80,7 +95,7 @@ class VehicleStore {
     this.sortYear = false;
   }
   @action sortByYear() {
-    this.VehicleService.getVehicles().sort((b, a) =>
+    this.vehicleList.sort((b, a) =>
       a.year < b.year ? 1 : a.year > b.year ? -1 : 0
     );
     this.sortBrand = false;
@@ -118,25 +133,25 @@ class VehicleStore {
     this.setShowModal();
     this.sortBrand = !this.sortBrand;
     this.sortBrand = !this.sortBrand;
+    this.refreshPage();
   }
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
   @action.bound setPlaceholderBrand() {
-    let placeholderName = this.VehicleService.getVehicles().find(
+    let placeholderName = this.vehicleList.find(
       obj => obj.id === this.renameId
     );
     this.renameVehicleBrand = placeholderName.brand;
   }
   @action.bound setPlaceholderModel() {
-    let placeholderName = this.VehicleService.getVehicles().find(
+    let placeholderName = this.vehicleList.find(
       obj => obj.id === this.renameId
     );
-    console.log(placeholderName);
     this.renameVehicleModel = placeholderName.model;
   }
   @action.bound setPlaceholderYear() {
-    let placeholderName = this.VehicleService.getVehicles().find(
+    let placeholderName = this.vehicleList.find(
       obj => obj.id === this.renameId
     );
     this.renameVehicleYear = placeholderName.year;
@@ -152,22 +167,24 @@ class VehicleStore {
   }
   @action.bound
   getParentId() {
-    this.VehicleService.getVehicles().forEach(async obj => {
-      const targetBrand = await this.brandList.find(e => e.id === obj.parentId);
-      obj.brand = targetBrand.name;
+    this.vehicleList.forEach(obj => {
+      const targetBrand = this.brandList.find(e => e.id === obj.parentId);
+      if (targetBrand === undefined) {
+        return null;
+      } else {
+        obj.brand = targetBrand.name;
+      }
     });
   }
   @computed get vehicleLastPage() {
-    return Math.ceil(
-      this.VehicleService.getVehicles().length / this.rowsPerPage
-    );
+    return Math.ceil(this.vehicleList.length / this.rowsPerPage);
   }
 
   @computed get vehicleId() {
     return (
       Math.max.apply(
         null,
-        this.VehicleService.getVehicles().map(obj => obj.id)
+        this.vehicleList.map(obj => obj.id)
       ) + 1
     );
   }
@@ -178,13 +195,13 @@ class VehicleStore {
   }
   @action.bound
   getVehicles(e) {
-    let vehicles = this.VehicleService.getVehicles();
+    let vehicles = this.vehicleList;
     return vehicles
       .filter(item => {
         if (this.filterBrand !== 0) {
           return item.parentId === this.filterBrand;
-        } else {
-          return true;
+        } else if (this.brandList.find(e => e.id === item.parentId)) {
+          return item;
         }
       })
       .slice(this.startIndex, this.endIndex)
@@ -229,14 +246,16 @@ class VehicleStore {
   }
   @action.bound
   onRenameMethod() {
-    this.VehicleService.renameVehicles(this.renameId, {
-      parentId: this.renameVehicleBrand,
-      model: this.renameVehicleModel,
-      year: this.renameVehicleYear
-    });
+    this.VehicleService.renameVehicles(
+      this.renameId,
+      this.renameVehicleBrand,
+      this.renameVehicleModel,
+      this.renameVehicleYear
+    );
     this.setShowRenameForm();
     this.setRenameVehicleModel("");
     this.setRenameVehicleYear("");
+    this.refreshPage();
   }
   @action.bound
   renameVehicleModelMethod(e) {
@@ -269,6 +288,7 @@ class VehicleStore {
 
     this.setFormVehicleModel("");
     this.setFormVehicleYear("");
+    this.refreshPage();
   }
   @action.bound
   formVehicleModelMethod(e) {

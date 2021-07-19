@@ -86,10 +86,7 @@ class BrandStore {
   }
 
   @action.bound onDelete() {
-    this.BrandService.deleteBrands(
-      this.renameId,
-      this.VehicleService.getVehicles()
-    );
+    this.BrandService.deleteBrands(this.renameId);
     this.setShowModal();
     this.sortBrand = !this.sortBrand;
     this.sortBrand = !this.sortBrand;
@@ -115,8 +112,8 @@ class BrandStore {
     );
   }
   @action.bound
-  async getParentId() {
-    return await DB.vehicle.forEach(obj => {
+  getParentId() {
+    return DB.vehicle.forEach(obj => {
       const targetBrand = this.brandList.find(e => e.id === obj.parentId);
       if (targetBrand === undefined) {
         return null;

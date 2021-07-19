@@ -1,9 +1,10 @@
-import DB from "../db.json";
+import axios from "axios";
+import { model } from "mongoose";
 class VehicleService {
   getVehicles() {
-    return DB.vehicle;
+    return axios.get(`http://localhost:3000/vehicle`);
   }
-  addVehicles(e) {
+  /* addVehicles(e) {
     let nextId = parseInt(
       DB.vehicle.map(x => x.parentId).lastIndexOf(e.parentId) + 1
     );
@@ -11,14 +12,29 @@ class VehicleService {
       nextId = DB.vehicle.length;
     }
     DB.vehicle.splice(nextId, 0, e);
+  } */
+  addVehicles(e) {
+    axios.post(`http://localhost:3000/vehicle`, e).then(res => {
+      console.log(res);
+      console.log(res.data);
+    });
   }
-
   deleteVehicles(id) {
-    const vehicles = DB.vehicle.findIndex(item => item.id === id);
-    DB.vehicle.splice(vehicles, 1);
+    axios.delete(`http://localhost:3000/vehicle/${id}`).then(res => {
+      console.log(res);
+      console.log(res.data);
+    });
+  }
+  renameVehicles(id, parentId, model, year) {
+    axios.put(`http://localhost:3000/vehicle/${id}`, {
+      id: id,
+      parentId: parentId,
+      model: model,
+      year: year
+    });
   }
 
-  renameVehicles(id, item) {
+  /*  renameVehicles(id, item) {
     const objId = DB.vehicle.findIndex(obj => obj.id === id);
     const objRename = DB.vehicle[objId];
     if (objRename.parentId === item.parentId) {
@@ -39,7 +55,7 @@ class VehicleService {
       }
       DB.vehicle.splice(nextId, 0, objRename);
     }
-  }
+  }*/
 }
 
 export { VehicleService };

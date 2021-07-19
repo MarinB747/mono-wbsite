@@ -13,14 +13,11 @@ class BrandService {
   renameBrands(id, name) {
     axios.put(`http://localhost:3000/brand/${id}`, { id: id, name: name });
   }
-  deleteBrands(id, vehicles) {
+  deleteBrands(id) {
     axios.delete(`http://localhost:3000/brand/${id}`).then(res => {
       console.log(res);
       console.log(res.data);
     });
-    const vehicleNum = vehicles.filter(item => item.parentId === id).length;
-    const vehicle = vehicles.findIndex(item => item.parentId === id);
-    vehicles.splice(vehicle, vehicleNum);
   }
 }
 
