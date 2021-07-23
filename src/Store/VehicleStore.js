@@ -1,15 +1,24 @@
-import DB from "../db.json";
-import { observable, action, computed, makeObservable } from "mobx";
+import {
+  observable,
+  action,
+  computed,
+  makeObservable,
+  runInAction
+} from "mobx";
+
 class VehicleStore {
   PageStore;
   VehicleService;
   BrandService;
+  RouterStore;
   constructor(PageStore) {
     this.PageStore = PageStore;
     this.VehicleService = PageStore.VehicleService;
     this.BrandService = PageStore.BrandService;
+    this.RouterStore = PageStore.RouterStore;
     makeObservable(this);
   }
+
   @observable rowsPerPage = 5;
   @observable currentPage = 1;
   @observable filterBrand = 0;
@@ -36,6 +45,11 @@ class VehicleStore {
   @observable vehicleList = [];
 
   @action.bound
+  openEditPage() {
+    this.PageStore.RouterStore.history.push(`/store-edit/${this.renameId}`);
+  }
+
+  @action.bound
   refreshPage() {
     window.location.reload(true);
   }
@@ -45,8 +59,9 @@ class VehicleStore {
   @action.bound
   getVehicleList() {
     this.VehicleService.getVehicles().then(res => {
-      this.setVehicleList(res.data);
-      return res.data;
+      runInAction(() => {
+        this.setVehicleList(res.data);
+      });
     });
   }
   @action.bound setBrandList(e) {
@@ -55,8 +70,9 @@ class VehicleStore {
   @action.bound
   getBrandList() {
     this.BrandService.getBrands().then(res => {
-      this.setBrandList(res.data);
-      return res.data;
+      runInAction(() => {
+        this.setBrandList(res.data);
+      });
     });
   }
 
@@ -221,11 +237,19 @@ class VehicleStore {
   @action.bound
   renameFormMethod(e) {
     this.setRenameId(e);
+    this.setPlaceholderBrand();
+    this.setPlaceholderModel();
+    this.setPlaceholderYear();
+    this.openEditPage();
+  }
+  /*  @action.bound
+  renameFormMethod(e) {
+    this.setRenameId(e);
     this.setShowRenameForm();
     this.setPlaceholderBrand();
     this.setPlaceholderModel();
     this.setPlaceholderYear();
-  }
+  } */
   @action.bound
   pagingMethod(e) {
     this.setRowsPerPage(e);

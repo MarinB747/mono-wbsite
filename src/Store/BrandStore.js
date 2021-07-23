@@ -1,13 +1,21 @@
 import DB from "../db.json";
-import { observable, action, computed, makeObservable } from "mobx";
+import {
+  observable,
+  action,
+  computed,
+  makeObservable,
+  runInAction
+} from "mobx";
 class BrandStore {
   PageStore;
   VehicleService;
   BrandService;
+  RotuerStore;
   constructor(PageStore) {
     this.PageStore = PageStore;
     this.VehicleService = PageStore.VehicleService;
     this.BrandService = PageStore.BrandService;
+    this.RouterStore = PageStore.RouterStore;
     makeObservable(this);
   }
   @observable rowsPerPage = 5;
@@ -19,13 +27,16 @@ class BrandStore {
   @observable startIndex = 0;
   @observable endIndex = 5;
   @observable submitDisabled = true;
-  @observable renameSubmitDisabled = true;
   @observable renameBrand = "";
   @observable renameId = "";
   @observable sortBrand = false;
   @observable showModal = false;
   @observable brandList = [];
 
+  @action.bound
+  openEditPage() {
+    this.PageStore.RouterStore.history.push(`/brand-edit/${this.renameId}`);
+  }
   @action.bound
   refreshPage() {
     window.location.reload(true);
@@ -36,8 +47,9 @@ class BrandStore {
   @action.bound
   getBrandList() {
     this.BrandService.getBrands().then(res => {
-      this.setBrandList(res.data);
-      return res.data;
+      runInAction(() => {
+        this.setBrandList(res.data);
+      });
     });
   }
   @action.bound setShowModal() {
@@ -77,9 +89,6 @@ class BrandStore {
   @action.bound setSubmitDisabled(e) {
     this.submitDisabled = e;
   }
-  @action.bound setRenameSubmitDisabled(e) {
-    this.renameSubmitDisabled = e;
-  }
 
   @computed get brandLastPage() {
     return Math.ceil(this.brandList.length / this.rowsPerPage);
@@ -93,9 +102,6 @@ class BrandStore {
     this.refreshPage();
   }
 
-  @action.bound setRenameBrand(e) {
-    this.renameBrand = e;
-  }
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
@@ -155,8 +161,8 @@ class BrandStore {
   @action.bound
   renameButtonMethod(e) {
     this.setRenameId(e);
-    this.setShowRenameForm();
     this.setPlaceholderBrand();
+    this.openEditPage();
   }
   @action.bound
   pagingMethod(e) {
