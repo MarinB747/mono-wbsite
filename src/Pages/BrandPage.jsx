@@ -39,12 +39,7 @@ class BrandPage extends React.PureComponent {
           lastPage={this.props.BrandStore.brandLastPage}
           prevPageFn={this.props.BrandStore.previousPageMethod}
           nextPageFn={this.props.BrandStore.nextPageMethod}
-          renameForm={this.props.BrandStore.showRenameForm}
           renameMethod={this.props.BrandStore.renameMethod}
-          firstRenameValue={this.props.BrandStore.renameBrand}
-          firstRenameMethod={this.props.BrandStore.renameBrandMethod}
-          renameSubmit={this.props.BrandStore.renameSubmitDisabled}
-          firstRenameInput="Brand"
           dataName="Brand"
           tableStyle="brand__list"
           paginationWrapperStyle="pagination__wrapper--brand"
