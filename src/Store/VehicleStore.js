@@ -158,7 +158,7 @@ class VehicleStore {
     let placeholderName = this.vehicleList.find(
       obj => obj.id === this.renameId
     );
-    this.renameVehicleBrand = placeholderName.brand;
+    this.renameVehicleBrand = placeholderName.parentId;
   }
   @action.bound setPlaceholderModel() {
     let placeholderName = this.vehicleList.find(
@@ -242,14 +242,7 @@ class VehicleStore {
     this.setPlaceholderYear();
     this.openEditPage();
   }
-  /*  @action.bound
-  renameFormMethod(e) {
-    this.setRenameId(e);
-    this.setShowRenameForm();
-    this.setPlaceholderBrand();
-    this.setPlaceholderModel();
-    this.setPlaceholderYear();
-  } */
+
   @action.bound
   pagingMethod(e) {
     this.setRowsPerPage(e);

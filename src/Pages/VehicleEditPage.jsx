@@ -1,68 +1,74 @@
 import React from "react";
 import "./Pages.css";
-import { inject } from "mobx-react";
+import { inject, observer } from "mobx-react";
 import "./Pages.css";
-@inject("PageStore")
+@inject("VehicleEditStore")
+@observer
 class VehicleEditPage extends React.PureComponent {
   componentDidMount = () => {
-    this.props.PageStore.BrandStore.getBrandList();
-    this.props.PageStore.VehicleStore.getBrandList();
+    this.props.VehicleEditStore.getId();
+    this.props.VehicleEditStore.getData();
   };
   render() {
     return (
       <div className="page">
-        <form
-          className="rename__form"
-          onSubmit={e => {
-            e.preventDefault();
-            this.props.renameMethod();
-          }}
-          value={this.props.renameForm}
-        >
-          {this.props.firstRenameSelect ? (
+        <div className="brand__table">
+          {
+            (this.props.VehicleEditStore.getData(),
+            this.props.VehicleEditStore.getId())
+          }
+          <form
+            className="rename__form"
+            onSubmit={e => {
+              e.preventDefault();
+              this.props.VehicleEditStore.renameMethod();
+            }}
+          >
             <>
-              <p>Input New {this.props.firstRenameSelect}</p>
+              <p>Input New Brand</p>
               <select
                 className="rename__field"
-                defaultValue={this.props.firstSelectValue}
-                onClick={e => this.props.firstSelectMethod(e.target.value)}
+                defaultValue={this.props.VehicleEditStore.placeholderBrand}
+                onClick={e =>
+                  this.props.VehicleEditStore.setRenameBrand(e.target.value)
+                }
               >
-                {this.props.selectRenameData(data => (
+                {this.props.VehicleEditStore.brandList.map(data => (
                   <option value={data.id}>{data.name}</option>
                 ))}
               </select>
             </>
-          ) : null}
-          <p>Input New {this.props.firstRenameInput}</p>
-          <input
-            className="rename__field"
-            type="text"
-            value={this.props.firstRenameValue}
-            onChange={e => {
-              this.props.firstRenameMethod(e.target.value);
-            }}
-          />
-          {this.props.secondRenameInput ? (
+            <p>Input New Model</p>
+            <input
+              className="rename__field"
+              type="text"
+              placeholder={this.props.VehicleEditStore.placeholderModel}
+              value={this.props.VehicleEditStore.renameModel}
+              onChange={e => {
+                this.props.VehicleEditStore.renameModelMethod(e.target.value);
+              }}
+            />
             <>
-              <p>Input {this.props.secondRenameInput}</p>
+              <p>Input Year</p>
               <input
                 className="rename__field"
                 type="text"
-                value={this.props.secondRenameValue}
+                placeholder={this.props.VehicleEditStore.placeholderYear}
+                value={this.props.VehicleEditStore.renameYear}
                 onChange={e => {
-                  this.props.secondRenameMethod(e.target.value);
+                  this.props.VehicleEditStore.renameYearMethod(e.target.value);
                 }}
               />
             </>
-          ) : null}
-          <button
-            className="rename__button"
-            type="submit"
-            disabled={this.props.renameSubmit}
-          >
-            Rename {this.props.dataName}
-          </button>
-        </form>
+            <button
+              className="rename__button"
+              type="submit"
+              disabled={this.props.VehicleEditStore.renameSubmitDisabled}
+            >
+              Rename Vehicle
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
