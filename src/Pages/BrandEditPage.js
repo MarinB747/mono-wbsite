@@ -5,9 +5,6 @@ import "./Pages.css";
 @inject("BrandEditStore")
 @observer
 class BrandEditPage extends React.PureComponent {
-  componentDidMount = () => {
-    this.props.BrandEditStore.getId();
-  };
   render() {
     return (
       <div className="brand__table">

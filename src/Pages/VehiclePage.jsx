@@ -5,10 +5,6 @@ import "./Pages.css";
 @inject("VehicleStore")
 @observer
 class VehiclePage extends React.PureComponent {
-  componentDidMount = () => {
-    this.props.VehicleStore.getBrandList();
-    this.props.VehicleStore.getVehicleList();
-  };
   render() {
     return (
       <div className="vehicle__table">

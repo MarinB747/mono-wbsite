@@ -6,11 +6,6 @@ import "./Pages.css";
 @inject("BrandStore")
 @observer
 class BrandPage extends React.PureComponent {
-  componentDidMount = () => {
-    this.props.BrandStore.getBrandList();
-    this.props.BrandStore.getParentId();
-  };
-
   render() {
     return (
       <div className="brand__table">

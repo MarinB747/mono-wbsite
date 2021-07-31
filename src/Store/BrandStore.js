@@ -1,4 +1,3 @@
-import DB from "../db.json";
 import {
   observable,
   action,
@@ -16,6 +15,8 @@ class BrandStore {
     this.VehicleService = PageStore.VehicleService;
     this.BrandService = PageStore.BrandService;
     this.RouterStore = PageStore.RouterStore;
+    this.getBrandList();
+    this.getVehicleList();
     makeObservable(this);
   }
   @observable rowsPerPage = 5;
@@ -32,6 +33,7 @@ class BrandStore {
   @observable sortBrand = false;
   @observable showModal = false;
   @observable brandList = [];
+  @observable vehicleList = [];
 
   @action.bound
   openEditPage() {
@@ -44,11 +46,21 @@ class BrandStore {
   @action.bound setBrandList(e) {
     this.brandList = e;
   }
+  @action.bound setVehicleList(e) {
+    this.vehicleList = e;
+  }
   @action.bound
   getBrandList() {
     this.BrandService.getBrands().then(res => {
       runInAction(() => {
         this.setBrandList(res.data);
+      });
+    });
+  }
+  getVehicleList() {
+    this.VehicleService.getVehicles().then(res => {
+      runInAction(() => {
+        this.setVehicleList(res.data);
       });
     });
   }
@@ -119,7 +131,7 @@ class BrandStore {
   }
   @action.bound
   getParentId() {
-    return DB.vehicle.forEach(obj => {
+    this.vehicleList.forEach(obj => {
       const targetBrand = this.brandList.find(e => e.id === obj.parentId);
       if (targetBrand === undefined) {
         return null;

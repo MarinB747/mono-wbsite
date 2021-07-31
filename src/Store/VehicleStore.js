@@ -16,6 +16,8 @@ class VehicleStore {
     this.VehicleService = PageStore.VehicleService;
     this.BrandService = PageStore.BrandService;
     this.RouterStore = PageStore.RouterStore;
+    this.getBrandList();
+    this.getVehicleList();
     makeObservable(this);
   }
 

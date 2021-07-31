@@ -5,10 +5,6 @@ import "./Pages.css";
 @inject("VehicleEditStore")
 @observer
 class VehicleEditPage extends React.PureComponent {
-  componentDidMount = () => {
-    this.props.VehicleEditStore.getId();
-    this.props.VehicleEditStore.getData();
-  };
   render() {
     return (
       <div className="page">
