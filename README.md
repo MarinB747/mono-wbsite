@@ -1,6 +1,8 @@
 # Running the project
 run json server first:
+
 cd into src folder and in there run command: json-server --watch db.json
+
 after that run yarn start in main folder and react will automaticly go to a different port since server is running on port 3000
 
 # Getting Started with Create React App
