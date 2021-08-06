@@ -5,14 +5,14 @@ import "./Pages.css";
 @inject("VehicleEditStore")
 @observer
 class VehicleEditPage extends React.PureComponent {
+  componentDidMount() {
+    this.props.VehicleEditStore.getData();
+    this.props.VehicleEditStore.getId();
+  }
   render() {
     return (
       <div className="page">
         <div className="brand__table">
-          {
-            (this.props.VehicleEditStore.getData(),
-            this.props.VehicleEditStore.getId())
-          }
           <form
             className="rename__form"
             onSubmit={e => {
@@ -24,8 +24,8 @@ class VehicleEditPage extends React.PureComponent {
               <p>Input New Brand</p>
               <select
                 className="rename__field"
-                defaultValue={this.props.VehicleEditStore.placeholderBrand}
-                onClick={e =>
+                value={this.props.VehicleEditStore.renameBrand}
+                onChange={e =>
                   this.props.VehicleEditStore.setRenameBrand(e.target.value)
                 }
               >
@@ -38,7 +38,6 @@ class VehicleEditPage extends React.PureComponent {
             <input
               className="rename__field"
               type="text"
-              placeholder={this.props.VehicleEditStore.placeholderModel}
               value={this.props.VehicleEditStore.renameModel}
               onChange={e => {
                 this.props.VehicleEditStore.renameModelMethod(e.target.value);
@@ -49,7 +48,6 @@ class VehicleEditPage extends React.PureComponent {
               <input
                 className="rename__field"
                 type="text"
-                placeholder={this.props.VehicleEditStore.placeholderYear}
                 value={this.props.VehicleEditStore.renameYear}
                 onChange={e => {
                   this.props.VehicleEditStore.renameYearMethod(e.target.value);

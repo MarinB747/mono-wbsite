@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from "mobx";
+import { observable, action, makeObservable, runInAction } from "mobx";
 class VehicleEditStore {
   PageStore;
   VehicleService;
@@ -10,6 +10,10 @@ class VehicleEditStore {
     this.BrandService = PageStore.BrandService;
     this.RouterStore = PageStore.RouterStore;
     this.VehicleStore = PageStore.VehicleStore;
+    runInAction(() => {
+      this.getData();
+      this.getId();
+    });
     makeObservable(this);
   }
 
@@ -17,21 +21,18 @@ class VehicleEditStore {
   @observable renameBrand = "";
   @observable renameModel = "";
   @observable renameYear = "";
-  @observable placeholderBrand = 0;
-  @observable placeholderModel = "";
-  @observable placeholderYear = "";
-  @observable renameSubmitDisabled = true;
+  @observable renameSubmitDisabled = false;
   @observable brandList = [];
 
-  @action
+  @action.bound
   setRenameBrand(e) {
     this.renameBrand = parseInt(e);
   }
-  @action
+  @action.bound
   setRenameModel(e) {
     this.renameModel = e;
   }
-  @action
+  @action.bound
   setRenameYear(e) {
     this.renameYear = e;
   }
@@ -39,14 +40,12 @@ class VehicleEditStore {
   getId() {
     const loc = window.location.pathname.split("/")[2];
     this.renameId = parseInt(loc);
-    console.log(loc);
-    console.log(this.renameId);
   }
   @action.bound
   getData() {
-    this.placeholderBrand = this.VehicleStore.renameVehicleBrand;
-    this.placeholderModel = this.VehicleStore.renameVehicleModel;
-    this.placeholderYear = this.VehicleStore.renameVehicleYear;
+    this.renameBrand = this.VehicleStore.renameVehicleBrand;
+    this.renameModel = this.VehicleStore.renameVehicleModel;
+    this.renameYear = this.VehicleStore.renameVehicleYear;
     this.brandList = this.VehicleStore.brandList;
   }
   @action.bound
@@ -93,6 +92,12 @@ class VehicleEditStore {
     );
     this.goBack();
     this.refreshPage();
+  }
+  @action.bound
+  clearMethod() {
+    this.setRenameBrand("");
+    this.setRenameModel("");
+    this.setRenameYear("");
   }
 }
 

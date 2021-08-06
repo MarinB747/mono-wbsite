@@ -5,13 +5,13 @@ import "./Pages.css";
 @inject("BrandEditStore")
 @observer
 class BrandEditPage extends React.PureComponent {
+  componentDidMount() {
+    this.props.BrandEditStore.getBrand();
+    this.props.BrandEditStore.getId();
+  }
   render() {
     return (
       <div className="brand__table">
-        {
-          (this.props.BrandEditStore.getBrand(),
-          this.props.BrandEditStore.getId())
-        }
         <form
           className="rename__form"
           onSubmit={e => {
@@ -25,7 +25,6 @@ class BrandEditPage extends React.PureComponent {
             <input
               className="rename__field"
               type="text"
-              placeholder={this.props.BrandEditStore.placeholderBrand}
               value={this.props.BrandEditStore.renameBrand}
               onChange={e => {
                 this.props.BrandEditStore.renameBrandMethod(e.target.value);

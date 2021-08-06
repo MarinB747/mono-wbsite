@@ -7,17 +7,17 @@ import {
 } from "mobx";
 
 class VehicleStore {
-  PageStore;
-  VehicleService;
-  BrandService;
-  RouterStore;
-  constructor(PageStore) {
-    this.PageStore = PageStore;
-    this.VehicleService = PageStore.VehicleService;
-    this.BrandService = PageStore.BrandService;
-    this.RouterStore = PageStore.RouterStore;
-    this.getBrandList();
-    this.getVehicleList();
+  constructor(pageStore) {
+    runInAction(() => {
+      this.PageStore = pageStore;
+      this.VehicleService = pageStore.VehicleService;
+      this.BrandService = pageStore.BrandService;
+      this.RouterStore = pageStore.RouterStore;
+      console.log(this.VehicleService);
+      console.log(this.BrandService);
+      this.getBrandList();
+      this.getVehicleList();
+    });
     makeObservable(this);
   }
 

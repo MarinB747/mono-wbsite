@@ -15,8 +15,7 @@ class BrandEditStore {
 
   @observable renameId = "";
   @observable renameBrand = "";
-  @observable placeholderBrand = "";
-  @observable renameSubmitDisabled = true;
+  @observable renameSubmitDisabled = false;
 
   @action.bound
   setRenameBrand(e) {
@@ -31,7 +30,7 @@ class BrandEditStore {
   }
   @action.bound
   getBrand() {
-    this.placeholderBrand = this.BrandStore.renameBrand;
+    this.renameBrand = this.BrandStore.renameBrand;
   }
   @action.bound
   goBack() {
