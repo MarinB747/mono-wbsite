@@ -2,13 +2,13 @@ import React from "react";
 import "./Pages.css";
 import { inject, observer } from "mobx-react";
 import "./Pages.css";
-@inject("BrandEditStore")
+import { BrandEditStore } from "../Store/BrandEditStore";
+import { pageStore } from "../Store/PageStore";
+@inject(() => ({
+  BrandEditStore: new BrandEditStore(pageStore)
+}))
 @observer
 class BrandEditPage extends React.PureComponent {
-  componentDidMount() {
-    this.props.BrandEditStore.getBrand();
-    this.props.BrandEditStore.getId();
-  }
   render() {
     return (
       <div className="brand__table">

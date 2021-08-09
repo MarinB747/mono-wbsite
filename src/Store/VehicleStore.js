@@ -13,8 +13,6 @@ class VehicleStore {
       this.VehicleService = pageStore.VehicleService;
       this.BrandService = pageStore.BrandService;
       this.RouterStore = pageStore.RouterStore;
-      console.log(this.VehicleService);
-      console.log(this.BrandService);
       this.getBrandList();
       this.getVehicleList();
     });
@@ -156,7 +154,7 @@ class VehicleStore {
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
-  @action.bound setPlaceholderBrand() {
+  @action.bound setPlaceholderBrand(e) {
     let placeholderName = this.vehicleList.find(
       obj => obj.id === this.renameId
     );

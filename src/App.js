@@ -15,14 +15,7 @@ import React from "react";
 
 function App() {
   return (
-    <Provider
-      PageStore={pageStore}
-      VehicleStore={pageStore.VehicleStore}
-      VehicleEditStore={pageStore.VehicleEditStore}
-      BrandStore={pageStore.BrandStore}
-      BrandEditStore={pageStore.BrandEditStore}
-      routerStore={pageStore.RouterStore}
-    >
+    <Provider PageStore={pageStore}>
       <div className="app">
         <Router
           component={BrowserRouter}

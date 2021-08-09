@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from "mobx";
+import { observable, action, makeObservable, runInAction } from "mobx";
 class BrandEditStore {
   PageStore;
   VehicleService;
@@ -10,27 +10,38 @@ class BrandEditStore {
     this.BrandService = PageStore.BrandService;
     this.RouterStore = PageStore.RouterStore;
     this.BrandStore = PageStore.BrandStore;
+    this.getId();
+    this.getBrand();
     makeObservable(this);
   }
-
   @observable renameId = "";
   @observable renameBrand = "";
   @observable renameSubmitDisabled = false;
 
-  @action.bound
+  @action
+  getRenameBrand() {
+    const newBrand = this.BrandStore.brandList.find(
+      obj => obj.id == this.renameId
+    );
+    this.renameBrand = newBrand.name;
+  }
+  @action
   setRenameBrand(e) {
     this.renameBrand = e;
   }
+
   @action.bound
   getId() {
-    const loc = window.location.pathname.split("/")[2];
-    this.renameId = parseInt(loc);
-    console.log(loc);
-    console.log(this.renameId);
+    runInAction(() => {
+      const loc = window.location.pathname.split("/")[2];
+      this.renameId = parseInt(loc);
+    });
   }
-  @action.bound
+  @action
   getBrand() {
-    this.renameBrand = this.BrandStore.renameBrand;
+    runInAction(() => {
+      this.getRenameBrand();
+    });
   }
   @action.bound
   goBack() {
@@ -54,7 +65,6 @@ class BrandEditStore {
   }
   @action.bound
   renameMethod() {
-    this.getId();
     this.BrandService.renameBrands(this.renameId, this.renameBrand);
     this.goBack();
     this.refreshPage();

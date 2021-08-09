@@ -2,7 +2,11 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Table } from "../Components/Table";
 import "./Pages.css";
-@inject("VehicleStore")
+import { VehicleStore } from "../Store/VehicleStore";
+import { pageStore } from "../Store/PageStore";
+@inject(() => ({
+  VehicleStore: new VehicleStore(pageStore)
+}))
 @observer
 class VehiclePage extends React.PureComponent {
   render() {

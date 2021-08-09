@@ -2,13 +2,13 @@ import React from "react";
 import "./Pages.css";
 import { inject, observer } from "mobx-react";
 import "./Pages.css";
-@inject("VehicleEditStore")
+import { VehicleEditStore } from "../Store/VehicleEditStore";
+import { pageStore } from "../Store/PageStore";
+@inject(() => ({
+  VehicleEditStore: new VehicleEditStore(pageStore)
+}))
 @observer
 class VehicleEditPage extends React.PureComponent {
-  componentDidMount() {
-    this.props.VehicleEditStore.getData();
-    this.props.VehicleEditStore.getId();
-  }
   render() {
     return (
       <div className="page">
@@ -24,7 +24,7 @@ class VehicleEditPage extends React.PureComponent {
               <p>Input New Brand</p>
               <select
                 className="rename__field"
-                value={this.props.VehicleEditStore.renameBrand}
+                defaultValue={this.props.VehicleEditStore.renameBrand}
                 onChange={e =>
                   this.props.VehicleEditStore.setRenameBrand(e.target.value)
                 }

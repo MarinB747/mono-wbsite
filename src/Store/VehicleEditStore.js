@@ -5,19 +5,19 @@ class VehicleEditStore {
   BrandService;
   RotuerStore;
   constructor(PageStore) {
-    this.PageStore = PageStore;
-    this.VehicleService = PageStore.VehicleService;
-    this.BrandService = PageStore.BrandService;
-    this.RouterStore = PageStore.RouterStore;
-    this.VehicleStore = PageStore.VehicleStore;
     runInAction(() => {
-      this.getData();
-      this.getId();
+      this.PageStore = PageStore;
+      this.VehicleService = PageStore.VehicleService;
+      this.BrandService = PageStore.BrandService;
+      this.RouterStore = PageStore.RouterStore;
+      this.VehicleStore = PageStore.VehicleStore;
+      this.getId(this);
+      this.getData(this);
     });
     makeObservable(this);
   }
 
-  @observable renameId = "";
+  @observable renameId = 0;
   @observable renameBrand = "";
   @observable renameModel = "";
   @observable renameYear = "";
@@ -37,16 +37,42 @@ class VehicleEditStore {
     this.renameYear = e;
   }
   @action.bound
+  getRenameBrand() {
+    const newBrand = this.VehicleStore.vehicleList.find(
+      obj => obj.id == this.renameId
+    );
+    this.renameBrand = parseInt(newBrand.parentId);
+  }
+
+  @action.bound
+  getRenameModel() {
+    const newModel = this.VehicleStore.vehicleList.find(
+      obj => obj.id == this.renameId
+    );
+    this.renameModel = newModel.model;
+  }
+  @action.bound
+  getRenameYear() {
+    const newYear = this.VehicleStore.vehicleList.find(
+      obj => obj.id == this.renameId
+    );
+    this.renameYear = newYear.year;
+  }
+  @action.bound
   getId() {
-    const loc = window.location.pathname.split("/")[2];
-    this.renameId = parseInt(loc);
+    runInAction(() => {
+      const loc = window.location.pathname.split("/")[2];
+      this.renameId = loc;
+    });
   }
   @action.bound
   getData() {
-    this.renameBrand = this.VehicleStore.renameVehicleBrand;
-    this.renameModel = this.VehicleStore.renameVehicleModel;
-    this.renameYear = this.VehicleStore.renameVehicleYear;
-    this.brandList = this.VehicleStore.brandList;
+    runInAction(() => {
+      this.getRenameBrand();
+      this.getRenameModel();
+      this.getRenameYear();
+      this.brandList = this.VehicleStore.brandList;
+    });
   }
   @action.bound
   goBack() {
@@ -91,7 +117,6 @@ class VehicleEditStore {
       this.renameYear
     );
     this.goBack();
-    this.refreshPage();
   }
   @action.bound
   clearMethod() {

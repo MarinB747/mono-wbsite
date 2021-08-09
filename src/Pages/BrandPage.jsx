@@ -2,8 +2,11 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Table } from "../Components/Table";
 import "./Pages.css";
-
-@inject("BrandStore")
+import { BrandStore } from "../Store/BrandStore";
+import { pageStore } from "../Store/PageStore";
+@inject(() => ({
+  BrandStore: new BrandStore(pageStore)
+}))
 @observer
 class BrandPage extends React.PureComponent {
   render() {
