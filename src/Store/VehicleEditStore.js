@@ -12,7 +12,7 @@ class VehicleEditStore {
       this.RouterStore = PageStore.RouterStore;
       this.VehicleStore = PageStore.VehicleStore;
       this.getId(this);
-      this.getData(this);
+      this.getVehicleList();
     });
     makeObservable(this);
   }
@@ -23,7 +23,24 @@ class VehicleEditStore {
   @observable renameYear = "";
   @observable renameSubmitDisabled = false;
   @observable brandList = [];
+  @observable vehicleList = [];
 
+  @action.bound
+  getVehicleList() {
+    this.VehicleService.getVehicles().then(res => {
+      runInAction(() => {
+        this.setVehicleList(res.data);
+      });
+      this.brandList = this.VehicleStore.brandList;
+      this.getRenameBrand();
+      this.getRenameModel();
+      this.getRenameYear();
+    });
+  }
+  @action.bound
+  setVehicleList(e) {
+    this.vehicleList = e;
+  }
   @action.bound
   setRenameBrand(e) {
     this.renameBrand = parseInt(e);
@@ -38,24 +55,19 @@ class VehicleEditStore {
   }
   @action.bound
   getRenameBrand() {
-    const newBrand = this.VehicleStore.vehicleList.find(
-      obj => obj.id == this.renameId
-    );
+    const newBrand = this.vehicleList.find(obj => obj.id == this.renameId);
+    console.log(newBrand);
     this.renameBrand = parseInt(newBrand.parentId);
   }
 
   @action.bound
   getRenameModel() {
-    const newModel = this.VehicleStore.vehicleList.find(
-      obj => obj.id == this.renameId
-    );
+    const newModel = this.vehicleList.find(obj => obj.id == this.renameId);
     this.renameModel = newModel.model;
   }
   @action.bound
   getRenameYear() {
-    const newYear = this.VehicleStore.vehicleList.find(
-      obj => obj.id == this.renameId
-    );
+    const newYear = this.vehicleList.find(obj => obj.id == this.renameId);
     this.renameYear = newYear.year;
   }
   @action.bound
@@ -63,15 +75,6 @@ class VehicleEditStore {
     runInAction(() => {
       const loc = window.location.pathname.split("/")[2];
       this.renameId = loc;
-    });
-  }
-  @action.bound
-  getData() {
-    runInAction(() => {
-      this.getRenameBrand();
-      this.getRenameModel();
-      this.getRenameYear();
-      this.brandList = this.VehicleStore.brandList;
     });
   }
   @action.bound

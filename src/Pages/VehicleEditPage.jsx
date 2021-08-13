@@ -24,7 +24,7 @@ class VehicleEditPage extends React.PureComponent {
               <p>Input New Brand</p>
               <select
                 className="rename__field"
-                defaultValue={this.props.VehicleEditStore.renameBrand}
+                value={this.props.VehicleEditStore.renameBrand}
                 onChange={e =>
                   this.props.VehicleEditStore.setRenameBrand(e.target.value)
                 }

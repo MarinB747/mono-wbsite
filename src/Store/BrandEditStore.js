@@ -11,13 +11,27 @@ class BrandEditStore {
     this.RouterStore = PageStore.RouterStore;
     this.BrandStore = PageStore.BrandStore;
     this.getId();
-    this.getBrand();
+    this.getBrandList();
     makeObservable(this);
   }
   @observable renameId = "";
   @observable renameBrand = "";
   @observable renameSubmitDisabled = false;
+  @observable brandList = [];
 
+  @action.bound
+  getBrandList() {
+    this.BrandService.getBrands().then(res => {
+      runInAction(() => {
+        this.setBrandList(res.data);
+      });
+      this.getRenameBrand();
+    });
+  }
+  @action.bound
+  setBrandList(e) {
+    this.brandList = e;
+  }
   @action
   getRenameBrand() {
     const newBrand = this.BrandStore.brandList.find(
@@ -37,12 +51,7 @@ class BrandEditStore {
       this.renameId = parseInt(loc);
     });
   }
-  @action
-  getBrand() {
-    runInAction(() => {
-      this.getRenameBrand();
-    });
-  }
+
   @action.bound
   goBack() {
     this.PageStore.RouterStore.history.push(`/brand`);
