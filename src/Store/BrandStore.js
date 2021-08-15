@@ -24,11 +24,9 @@ class BrandStore {
   @observable pageCount = [{ pages: 5 }, { pages: 10 }, { pages: 20 }];
   @observable vehicleBrand = "";
   @observable filterBrand = "";
-  @observable showRenameForm = false;
   @observable startIndex = 0;
   @observable endIndex = 5;
   @observable submitDisabled = true;
-  @observable renameBrand = "";
   @observable renameId = "";
   @observable sortBrand = false;
   @observable showModal = false;
@@ -79,9 +77,6 @@ class BrandStore {
   @action.bound setVehicleBrand(e) {
     this.vehicleBrand = e;
   }
-  @action.bound setShowRenameForm() {
-    this.showRenameForm = !this.showRenameForm;
-  }
   @action.bound filterByBrand(e) {
     this.filterBrand = e;
   }
@@ -117,10 +112,7 @@ class BrandStore {
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
-  @action.bound setPlaceholderBrand() {
-    let placeholderName = this.brandList.find(obj => obj.id === this.renameId);
-    this.renameBrand = placeholderName.name;
-  }
+
   @computed get brandId() {
     return (
       Math.max.apply(
@@ -144,9 +136,6 @@ class BrandStore {
   @action.bound
   renameMethod() {
     this.BrandService.renameBrands(this.renameId, this.renameBrand);
-    this.setRenameSubmitDisabled(true);
-    this.setShowRenameForm();
-    this.setRenameBrand("");
     this.refreshPage();
   }
   @action.bound
@@ -173,7 +162,6 @@ class BrandStore {
   @action.bound
   renameButtonMethod(e) {
     this.setRenameId(e);
-    this.setPlaceholderBrand();
     this.openEditPage();
   }
   @action.bound
@@ -194,15 +182,7 @@ class BrandStore {
     this.setStartIndex();
     this.setEndIndex();
   }
-  @action.bound
-  renameBrandMethod(e) {
-    this.setRenameBrand(e);
-    if (this.renameBrand !== "") {
-      this.setRenameSubmitDisabled(false);
-    } else {
-      this.setRenameSubmitDisabled(true);
-    }
-  }
+
   @action.bound
   addBrandMethod() {
     this.BrandService.addBrands({

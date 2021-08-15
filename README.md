@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Running the app
+
+Cd into src folder and in terminal run: json-server --watch db.json
+
+After that run react project with yarn/npm start in project folder, react will automaticly suggest new port since json server is running on port 3000
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -32,10 +32,6 @@ class VehicleStore {
   @observable formVehicleModel = "";
   @observable formVehicleYear = "";
   @observable formSubmitDisabled = true;
-  @observable renameVehicleBrand = "";
-  @observable renameVehicleParentId = "";
-  @observable renameVehicleModel = "";
-  @observable renameVehicleYear = "";
   @observable renameId = "";
   @observable sortBrand = false;
   @observable sortModel = false;
@@ -91,9 +87,7 @@ class VehicleStore {
   @action filterByBrand(e) {
     this.filterBrand = parseInt(e);
   }
-  @action setShowRenameForm() {
-    this.showRenameForm = !this.showRenameForm;
-  }
+
   @action sortByBrand() {
     this.vehicleList.sort((b, a) =>
       a.brand < b.brand ? 1 : a.brand > b.brand ? -1 : 0
@@ -124,9 +118,7 @@ class VehicleStore {
   @action setEndIndex() {
     this.endIndex = this.startIndex + this.rowsPerPage;
   }
-  @action setRenameSubmitDisabled(e) {
-    this.renameSubmitDisabled = e;
-  }
+
   @action setFormVehicleBrand(e) {
     this.formVehicleBrand = parseInt(e);
   }
@@ -136,9 +128,7 @@ class VehicleStore {
   @action setFormVehicleYear(e) {
     this.formVehicleYear = e;
   }
-  @action setrenameVehicleParentId(e) {
-    this.renameVehicleParentId = parseInt(e);
-  }
+
   @action setFormSubmitDisabled(e) {
     this.formSubmitDisabled = e;
   }
@@ -154,33 +144,7 @@ class VehicleStore {
   @action.bound setRenameId(e) {
     this.renameId = parseInt(e);
   }
-  @action.bound setPlaceholderBrand(e) {
-    let placeholderName = this.vehicleList.find(
-      obj => obj.id === this.renameId
-    );
-    this.renameVehicleBrand = placeholderName.parentId;
-  }
-  @action.bound setPlaceholderModel() {
-    let placeholderName = this.vehicleList.find(
-      obj => obj.id === this.renameId
-    );
-    this.renameVehicleModel = placeholderName.model;
-  }
-  @action.bound setPlaceholderYear() {
-    let placeholderName = this.vehicleList.find(
-      obj => obj.id === this.renameId
-    );
-    this.renameVehicleYear = placeholderName.year;
-  }
-  @action.bound setRenameVehicleBrand(e) {
-    this.renameVehicleBrand = parseInt(e);
-  }
-  @action.bound setRenameVehicleModel(e) {
-    this.renameVehicleModel = e;
-  }
-  @action.bound setRenameVehicleYear(e) {
-    this.renameVehicleYear = e;
-  }
+
   @action.bound
   getParentId() {
     this.vehicleList.forEach(obj => {
@@ -223,23 +187,10 @@ class VehicleStore {
       .slice(this.startIndex, this.endIndex)
       .map(e);
   }
-  @action.bound
-  showModalMethod(e) {
-    this.setRenameId(e);
-    this.setShowModal();
-    this.setPlaceholderBrand();
-    this.setPlaceholderModel();
-    this.setPlaceholderYear();
-    this.sortBrand = false;
-    this.sortModel = false;
-    this.sortYear = false;
-  }
+
   @action.bound
   renameFormMethod(e) {
     this.setRenameId(e);
-    this.setPlaceholderBrand();
-    this.setPlaceholderModel();
-    this.setPlaceholderYear();
     this.openEditPage();
   }
 
@@ -261,39 +212,7 @@ class VehicleStore {
     this.setStartIndex();
     this.setEndIndex();
   }
-  @action.bound
-  onRenameMethod() {
-    this.VehicleService.renameVehicles(
-      this.renameId,
-      this.renameVehicleBrand,
-      this.renameVehicleModel,
-      this.renameVehicleYear
-    );
-    this.setShowRenameForm();
-    this.setRenameVehicleModel("");
-    this.setRenameVehicleYear("");
-    this.refreshPage();
-  }
-  @action.bound
-  renameVehicleModelMethod(e) {
-    this.setRenameVehicleModel(e);
-    if (this.renameVehicleModel && this.renameVehicleYear !== "") {
-      this.setRenameSubmitDisabled(false);
-    } else {
-      this.setRenameSubmitDisabled(true);
-    }
-  }
-  @action.bound
-  renameVehicleYearMethod(e) {
-    if (e.match("^[0-9]{1,4}$") != null) {
-      this.setRenameVehicleYear(e);
-    }
-    if (this.renameVehicleModel && this.renameVehicleYear !== "") {
-      this.setRenameSubmitDisabled(false);
-    } else {
-      this.setRenameSubmitDisabled(true);
-    }
-  }
+
   @action.bound
   addVehicleMethod() {
     this.VehicleService.addVehicles({
