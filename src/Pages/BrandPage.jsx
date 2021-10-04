@@ -44,6 +44,7 @@ class BrandPage extends React.PureComponent {
           showModal={this.props.BrandStore.showModal}
           hideModalMethod={this.props.BrandStore.setShowModal}
           showModalMethod={this.props.BrandStore.showModalMethod}
+          DeleteTXT="Are you sure you want to delete selected brand and all vehicles of the same brand?"
         />
 
         <form

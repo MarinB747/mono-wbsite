@@ -1,25 +1,25 @@
 import axios from "axios";
 class VehicleService {
   getVehicles() {
-    return axios.get(`http://localhost:3000/vehicle`);
+    return axios.get(`http://127.0.0.1:3333/vehicles`);
   }
 
   addVehicles(e) {
-    axios.post(`http://localhost:3000/vehicle`, e).then(res => {
+    axios.post(`http://127.0.0.1:3333/vehicles`, e).then(res => {
       console.log(res);
       console.log(res.data);
     });
   }
   deleteVehicles(id) {
-    axios.delete(`http://localhost:3000/vehicle/${id}`).then(res => {
+    axios.delete(`http://127.0.0.1:3333/vehicles/${id}`).then(res => {
       console.log(res);
       console.log(res.data);
     });
   }
-  renameVehicles(id, parentId, model, year) {
-    axios.put(`http://localhost:3000/vehicle/${id}`, {
+  renameVehicles(id, brand_id, model, year) {
+    axios.put(`http://127.0.0.1:3333/vehicles/${id}`, {
       id: id,
-      parentId: parentId,
+      brand_id: brand_id,
       model: model,
       year: year
     });

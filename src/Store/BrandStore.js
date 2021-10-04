@@ -51,7 +51,7 @@ class BrandStore {
   getBrandList() {
     this.BrandService.getBrands().then(res => {
       runInAction(() => {
-        this.setBrandList(res.data);
+        this.setBrandList(res.data.data);
       });
     });
   }
@@ -146,6 +146,7 @@ class BrandStore {
   @action.bound
   getBrands(e) {
     const brands = this.brandList;
+    console.log(this.brandList);
     return brands
       .filter(item => {
         if (item.name.indexOf(this.filterBrand) > -1) return true;
@@ -157,7 +158,6 @@ class BrandStore {
   showModalMethod(e) {
     this.setRenameId(e);
     this.setShowModal();
-    this.setPlaceholderBrand();
   }
   @action.bound
   renameButtonMethod(e) {

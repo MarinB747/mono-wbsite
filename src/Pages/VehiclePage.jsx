@@ -63,6 +63,7 @@ class VehiclePage extends React.PureComponent {
           showModal={this.props.VehicleStore.showModal}
           hideModalMethod={this.props.VehicleStore.setShowModal}
           showModalMethod={this.props.VehicleStore.showModalMethod}
+          DeleteTXT="Are you sure you want to delete selected vehicle?"
         />
 
         <form

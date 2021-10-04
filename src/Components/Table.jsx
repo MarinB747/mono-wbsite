@@ -80,8 +80,7 @@ class Table extends React.Component {
         </div>
         {this.props.showModal ? (
           <div className="modal__container">
-            Are you sure you want to delete {this.props.firstSelectValue}{" "}
-            {this.props.firstRenameValue} {this.props.secondRenameValue} ?
+            {this.props.DeleteTXT}
             <div className="modal__btn--wrapper">
               <button
                 onClick={() => {

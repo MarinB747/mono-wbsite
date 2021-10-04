@@ -15,6 +15,7 @@ class VehicleStore {
       this.RouterStore = pageStore.RouterStore;
       this.getBrandList();
       this.getVehicleList();
+      console.log(this.vehicleList);
     });
     makeObservable(this);
   }
@@ -56,7 +57,7 @@ class VehicleStore {
   getVehicleList() {
     this.VehicleService.getVehicles().then(res => {
       runInAction(() => {
-        this.setVehicleList(res.data);
+        this.setVehicleList(res.data.data);
       });
     });
   }
@@ -67,7 +68,7 @@ class VehicleStore {
   getBrandList() {
     this.BrandService.getBrands().then(res => {
       runInAction(() => {
-        this.setBrandList(res.data);
+        this.setBrandList(res.data.data);
       });
     });
   }
@@ -148,7 +149,7 @@ class VehicleStore {
   @action.bound
   getParentId() {
     this.vehicleList.forEach(obj => {
-      const targetBrand = this.brandList.find(e => e.id === obj.parentId);
+      const targetBrand = this.brandList.find(e => e.id === obj.brand_id);
       if (targetBrand === undefined) {
         return null;
       } else {
@@ -179,8 +180,8 @@ class VehicleStore {
     return vehicles
       .filter(item => {
         if (this.filterBrand !== 0) {
-          return item.parentId === this.filterBrand;
-        } else if (this.brandList.find(e => e.id === item.parentId)) {
+          return item.brand_id === this.filterBrand;
+        } else if (this.brandList.find(e => e.id === item.brand_id)) {
           return item;
         }
       })
@@ -216,7 +217,7 @@ class VehicleStore {
   @action.bound
   addVehicleMethod() {
     this.VehicleService.addVehicles({
-      parentId: this.formVehicleBrand,
+      brand_id: this.formVehicleBrand,
       model: this.formVehicleModel,
       year: this.formVehicleYear,
       id: this.vehicleId
@@ -245,6 +246,11 @@ class VehicleStore {
     } else {
       this.setFormSubmitDisabled(true);
     }
+  }
+  @action.bound
+  showModalMethod(e) {
+    this.setRenameId(e);
+    this.setShowModal();
   }
 }
 

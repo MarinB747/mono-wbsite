@@ -57,7 +57,7 @@ class VehicleEditStore {
   getRenameBrand() {
     const newBrand = this.vehicleList.find(obj => obj.id == this.renameId);
     console.log(newBrand);
-    this.renameBrand = parseInt(newBrand.parentId);
+    this.renameBrand = parseInt(newBrand.brand_id);
   }
 
   @action.bound
